@@ -1,43 +1,48 @@
 // ==========================================================================
-// D3.js Bottom-Up Tree Engine for Analytic Philosophy
+// The Tree of Analytic Philosophy - Botanical & D3 Hybrid Engine
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    // --- 1. D3.js 画布与缩放初始化 ---
-    const width = document.getElementById("tree-canvas-container").clientWidth;
-    const height = document.getElementById("tree-canvas-container").clientHeight;
+    const container = document.getElementById("tree-canvas-container");
+    const width = container.clientWidth;
+    const height = container.clientHeight;
     
     const svg = d3.select("#philosophy-tree-svg")
         .attr("width", "100%")
         .attr("height", "100%");
         
+    // 定义 SVG 渐变效果（赋予树干立体木质感）
+    const defs = svg.append("defs");
+    const trunkGrad = defs.append("linearGradient")
+        .attr("id", "trunk-gradient")
+        .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%");
+    trunkGrad.append("stop").attr("offset", "0%").attr("stop-color", "#3e2723");
+    trunkGrad.append("stop").attr("offset", "50%").attr("stop-color", "#5d4037");
+    trunkGrad.append("stop").attr("offset", "100%").attr("stop-color", "#3e2723");
+
     const gMain = svg.append("g");
     
-    // D3 缩放引擎
+    // 缩放与平移引擎
     const zoom = d3.zoom()
-        .scaleExtent([0.1, 3])
+        .scaleExtent([0.15, 3.5])
         .on("zoom", (event) => { gMain.attr("transform", event.transform); });
-    
     svg.call(zoom);
     
-    // 创建专属图层，确保层级正确：虚线在最下，实线在中，节点在最上
+    // 图层顺序：底层交叉虚线 -> 中层实体树干与树枝 -> 顶层节点
     const gCrossLinks = gMain.append("g").attr("class", "cross-links-layer");
+    const gBotanicalTrunk = gMain.append("g").attr("class", "botanical-trunk-layer");
     const gLinks = gMain.append("g").attr("class", "links-layer");
     const gNodes = gMain.append("g").attr("class", "nodes-layer");
 
-    // --- 2. D3 数据层次结构与布局算法 ---
+    // 数据层次初始化
     const root = d3.hierarchy(philosophyTreeData);
+    const treeLayout = d3.tree().nodeSize([150, 180]);
     
-    // 关键：d3.tree() 防止重叠。
-    // nodeSize([x间距, y间距])，x是水平节点距离，y是垂直层级距离。
-    const treeLayout = d3.tree().nodeSize([160, 200]); 
-    
-    // 根节点初始坐标设定在画面中下方
     root.x0 = 0;
-    root.y0 = height / 2;
+    root.y0 = 0;
 
-    // 默认折叠第三层以下的节点以保持界面清爽
+    // 默认折叠状态：初始只展示到一级主枝（Depth 2 展开，Depth > 2 收起）
     root.descendants().forEach(d => {
         if (d.depth > 2) {
             d._children = d.children;
@@ -45,28 +50,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    let i = 0; // 动画 ID 计数器
+    let i = 0;
 
-    // --- 3. 核心更新与绘制逻辑 ---
+    // ==================================================================
+    // 核心渲染与更新引擎
+    // ==================================================================
     function update(source) {
         const duration = 500;
-        
-        // 执行 D3 树形算法计算坐标
         const treeData = treeLayout(root);
         const nodes = treeData.descendants();
         const links = treeData.links();
 
-        // 【最关键一步：将其变为自底向上的树】
-        // 标准 D3 tree 是从 y=0 向下生长。我们将 y 取反，即可实现向上生长。
+        // 垂直反转：实现自底向上的植物生长形态
         nodes.forEach(d => { d.y = -d.y; });
 
-        // =========== 绘制节点 ===========
+        // 绘制物理主干脊椎与根系底座
+        drawBotanicalSpineAndRoots();
+
+        // 节点更新
         const node = gNodes.selectAll("g.node")
             .data(nodes, d => d.id || (d.id = ++i));
 
         const nodeEnter = node.enter().append("g")
-            .attr("class", d => `node ${d.data.type}`)
-            .attr("transform", d => `translate(${source.x0},${source.y0})`) // 动画起点
+            .attr("class", d => `node ${d.data.nodeType || 'Concept'}`)
+            .attr("transform", d => `translate(${source.x0},${source.y0})`)
             .style("opacity", 0)
             .on("click", (event, d) => {
                 event.stopPropagation();
@@ -78,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         nodeEnter.append("text")
             .attr("dy", ".35em")
-            .attr("x", d => d.children || d._children ? -15 : 15) // 有子节点文字在左，无则在右
+            .attr("x", d => d.children || d._children ? -14 : 14)
             .attr("text-anchor", d => d.children || d._children ? "end" : "start")
             .text(d => d.data.title_en);
 
@@ -87,22 +94,21 @@ document.addEventListener("DOMContentLoaded", () => {
             .attr("transform", d => `translate(${d.x},${d.y})`)
             .style("opacity", 1);
 
-        const nodeExit = node.exit().transition().duration(duration)
+        node.exit().transition().duration(duration)
             .attr("transform", d => `translate(${source.x},${source.y})`)
             .style("opacity", 0)
             .remove();
 
-        // =========== 绘制主要树枝连线 (Parent-Child) ===========
-        const link = gLinks.selectAll("path.link")
+        // 主枝与次级枝条连线
+        const link = gLinks.selectAll("path.botanical-branch")
             .data(links, d => d.target.id);
 
-        // 使用 D3 的垂直贝塞尔曲线生成器
         const linkGenerator = d3.linkVertical()
             .x(d => d.x)
             .y(d => d.y);
 
         const linkEnter = link.enter().insert("path", "g")
-            .attr("class", d => `link ${d.target.data.type === 'Trunk' ? 'trunk' : ''}`)
+            .attr("class", "botanical-branch")
             .attr("stroke-width", d => getLinkThickness(d.target))
             .attr("d", d => {
                 const o = {x: source.x0, y: source.y0};
@@ -111,7 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const linkUpdate = linkEnter.merge(link);
         linkUpdate.transition().duration(duration)
-            .attr("d", linkGenerator);
+            .attr("d", linkGenerator)
+            .attr("stroke-width", d => getLinkThickness(d.target));
 
         link.exit().transition().duration(duration)
             .attr("d", d => {
@@ -120,29 +127,52 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .remove();
 
-        // 存储旧坐标供下次动画使用
         nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
-
-        // 动画完成后绘制跨领域虚线
-        setTimeout(drawCrossLinks, duration + 50);
+        setTimeout(drawCrossDomainLinks, duration + 50);
     }
 
-    // 树枝粗细动态映射
+    // 枝条粗细渐变映射
     function getLinkThickness(nodeData) {
-        if (nodeData.data.type === "Trunk") return 14;
-        if (nodeData.data.type === "Field") return 8;
-        if (nodeData.data.type === "Subfield") return 4;
-        return 2; // 叶片最细
+        if (nodeData.data.nodeType === "Trunk") return 12;
+        if (nodeData.data.nodeType === "Field") return 7;
+        if (nodeData.data.nodeType === "Subfield") return 4;
+        return 2;
     }
     
-    // 节点圆点大小动态映射
+    // 节点圆点半径映射
     function getRadius(nodeData) {
-        if (nodeData.data.type === "Trunk") return 10;
-        if (nodeData.data.type === "Field") return 8;
-        return 6;
+        if (nodeData.data.nodeType === "Trunk") return 9;
+        if (nodeData.data.nodeType === "Field") return 7;
+        if (nodeData.data.nodeType === "Root") return 6;
+        return 5;
     }
 
-    // 切换折叠状态
+    // 绘制自然植物树干与地下根系
+    function drawBotanicalSpineAndRoots() {
+        gBotanicalTrunk.selectAll("*").remove();
+
+        // 绘制实体渐变树干（自 y = 100 向上延伸至 y = -350）
+        gBotanicalTrunk.append("path")
+            .attr("d", "M -22 100 C -12 0, -8 -150, -12 -380 L 12 -380 C 8 -150, 12 0, 22 100 Z")
+            .attr("class", "botanical-trunk");
+
+        // 绘制地下向下延伸的根系（y > 100）
+        const rootsData = [
+            { d: "M 0 100 C -10 140, -40 180, -90 220" },
+            { d: "M 0 100 C 10 150, 50 190, 110 240" },
+            { d: "M 0 100 C 0 160, -20 220, -30 290" },
+            { d: "M 0 100 C 0 150, 20 210, 40 280" }
+        ];
+        rootsData.forEach(r => {
+            gBotanicalTrunk.append("path")
+                .attr("d", r.d)
+                .attr("class", "botanical-root")
+                .attr("stroke-width", "5")
+                .attr("fill", "none");
+        });
+    }
+
+    // 展开/收起交互
     function toggleNode(d) {
         if (d.children) {
             d._children = d.children;
@@ -152,15 +182,13 @@ document.addEventListener("DOMContentLoaded", () => {
             d._children = null;
         }
         update(d);
-        showNodeDetails(d.data); // 同步更新详情面板
+        showNodeDetails(d.data);
         updateBreadcrumb(d);
     }
 
-    // =========== 绘制跨领域交叉虚线 (Cross-References) ===========
-    function drawCrossLinks() {
-        gCrossLinks.selectAll("*").remove(); // 每次重绘清除旧线
-        
-        // 收集当前可见节点在画布上的实际引用
+    // 绘制跨学科虚线
+    function drawCrossDomainLinks() {
+        gCrossLinks.selectAll("*").remove();
         const visibleNodes = new Map();
         root.descendants().forEach(d => { visibleNodes.set(d.data.id, d); });
 
@@ -168,12 +196,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const source = visibleNodes.get(linkInfo.source);
             const target = visibleNodes.get(linkInfo.target);
             
-            // 只有当两个存在关联的节点同时展开并在屏幕上时，才绘制虚线
             if (source && target) {
-                // 使用二次贝塞尔曲线 (Q) 让虚线微微向上拱起，区别于主干树枝
                 const cx = (source.x + target.x) / 2;
-                const cy = Math.min(source.y, target.y) - 100;
-                
+                const cy = Math.min(source.y, target.y) - 120;
                 gCrossLinks.append("path")
                     .attr("class", "cross-link")
                     .attr("d", `M ${source.x} ${source.y} Q ${cx} ${cy} ${target.x} ${target.y}`);
@@ -181,15 +206,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 4. 视角初始化与居中 ---
-    // 将整个树下移，露出由下至上的生长轨迹
-    const initialTransform = d3.zoomIdentity.translate(width / 2, height - 150).scale(0.8);
+    // 初始化画布视角（置于地面线附近，自下而上观察整棵树）
+    const initialTransform = d3.zoomIdentity.translate(width / 2, height - 120).scale(0.75);
     svg.call(zoom.transform, initialTransform);
     update(root);
 
-    // --- 5. 交互控件绑定 (保留原有功能) ---
+    // ==================================================================
+    // 交互控件绑定
+    // ==================================================================
     document.getElementById("btn-zoom-in").addEventListener("click", () => {
-        svg.transition().duration(300).call(zoom.scaleBy, 1.2);
+        svg.transition().duration(300).call(zoom.scaleBy, 1.25);
     });
     document.getElementById("btn-zoom-out").addEventListener("click", () => {
         svg.transition().duration(300).call(zoom.scaleBy, 0.8);
@@ -204,18 +230,18 @@ document.addEventListener("DOMContentLoaded", () => {
         update(root); closeDetailsPanel();
     });
 
-    // --- 面板与面包屑更新 ---
+    // 学术详情抽屉控制
     const panel = document.getElementById("node-details-panel");
     document.getElementById("btn-close-panel").addEventListener("click", closeDetailsPanel);
     function closeDetailsPanel() { panel.classList.remove("open"); }
 
     function showNodeDetails(data) {
-        document.getElementById("detail-type").textContent = data.type;
+        document.getElementById("detail-type").textContent = data.nodeType || "Concept";
         document.getElementById("detail-title-en").textContent = data.title_en;
         document.getElementById("detail-title-zh").textContent = data.title_zh || "";
-        document.getElementById("detail-description").textContent = data.description || "No description provided.";
+        document.getElementById("detail-description").textContent = data.descriptionZh || data.description || "暂无学术概述。";
         
-        // Philosophers
+        // 哲学家
         const philSec = document.getElementById("section-philosophers");
         const philList = document.getElementById("detail-philosophers");
         philList.innerHTML = "";
@@ -224,14 +250,31 @@ document.addEventListener("DOMContentLoaded", () => {
             philSec.classList.remove("hidden");
         } else philSec.classList.add("hidden");
 
-        // External Links
+        // 跨学科关联
+        const relSec = document.getElementById("section-relations");
+        const relList = document.getElementById("detail-relations");
+        relList.innerHTML = "";
+        const relatedCross = crossLinksData.filter(l => l.source === data.id || l.target === data.id);
+        if (relatedCross.length > 0) {
+            relatedCross.forEach(rc => {
+                const li = document.createElement("li");
+                li.innerHTML = `<em>${rc.relationType}</em>`;
+                relList.appendChild(li);
+            });
+            relSec.classList.remove("hidden");
+        } else relSec.classList.add("hidden");
+
+        // 学术文献链接 (SEP 优先)
         const resSec = document.getElementById("section-resources");
         const resList = document.getElementById("detail-resources");
         resList.innerHTML = "";
         if (data.links && data.links.sep) {
-            resList.innerHTML += `<li><span class="tag-sep">SEP</span> <a href="${data.links.sep}" target="_blank">View Article</a></li>`;
+            resList.innerHTML += `<li><span class="tag-sep">SEP</span> <a href="${data.links.sep}" target="_blank">Stanford Encyclopedia of Philosophy Entry</a></li>`;
             resSec.classList.remove("hidden");
-        } else resSec.classList.add("hidden");
+        } else {
+            resList.innerHTML += `<li><span class="tag-alt">Search</span> <a href="https://plato.stanford.edu/search/searcher.py?query=${encodeURIComponent(data.title_en)}" target="_blank">Search on SEP</a></li>`;
+            resSec.classList.remove("hidden");
+        }
 
         panel.classList.add("open");
     }
@@ -243,8 +286,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("current-path").textContent = `Path: ${path.join(" → ")}`;
     }
 
-    // --- 搜索功能适配扁平化检索 ---
-    // 由于数据现在是树状嵌套的，我们需要一个平铺的数组来供搜索使用
+    // ==================================================================
+    // 全局穿透搜索与外部学术检索
+    // ==================================================================
     const flatData = [];
     root.descendants().forEach(d => { flatData.push(d); });
 
@@ -266,16 +310,15 @@ document.addEventListener("DOMContentLoaded", () => {
         localList.innerHTML = "";
         const matches = flatData.filter(d => {
             const data = d.data;
-            const searchStr = `${data.title_en} ${data.title_zh || ''} ${data.philosophers ? data.philosophers.join(" ") : ''}`.toLowerCase();
+            const searchStr = `${data.title_en} ${data.title_zh || ''} ${data.philosophers ? data.philosophers.join(" ") : ''} ${data.description || ''}`.toLowerCase();
             return searchStr.includes(query);
         });
 
         if (matches.length > 0) {
-            matches.slice(0, 5).forEach(d => {
+            matches.slice(0, 6).forEach(d => {
                 const li = document.createElement("li");
-                li.innerHTML = `<strong>${d.data.title_en}</strong> ${d.data.title_zh ? `(${d.data.title_zh})` : ''} <br><small style="color:#888">${d.data.type}</small>`;
+                li.innerHTML = `<strong>${d.data.title_en}</strong> ${d.data.title_zh ? `(${d.data.title_zh})` : ''} <br><small style="color:#777">${d.data.nodeType || 'Concept'}</small>`;
                 li.addEventListener("click", () => {
-                    // 自动展开目标节点的所有父级
                     let curr = d;
                     while(curr.parent) {
                         if(curr.parent._children) {
@@ -285,10 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         curr = curr.parent;
                     }
                     update(root);
-                    
-                    // 动画平滑定位到搜索结果
                     svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(width / 2 - d.x, height / 2 - d.y).scale(1.2));
-                    
                     showNodeDetails(d.data);
                     updateBreadcrumb(d);
                     hideSearchResults();
@@ -296,12 +336,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 localList.appendChild(li);
             });
+        } else {
+            const li = document.createElement("li");
+            li.textContent = "No local matches found. Try external engines below.";
+            li.style.color = "#888";
+            localList.appendChild(li);
         }
-        
+
         document.getElementById("link-sep").href = `https://plato.stanford.edu/search/searcher.py?query=${encodeURIComponent(query)}`;
         document.getElementById("link-iep").href = `https://www.google.com/search?q=site%3Aiep.utm.edu+${encodeURIComponent(query)}`;
+        document.getElementById("link-scholar").href = `https://scholar.google.com/scholar?q=${encodeURIComponent(query)}`;
         document.getElementById("link-wiki").href = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(query)}`;
-        document.getElementById("external-search-links").classList.remove("hidden"); 
+        document.getElementById("external-search-links").classList.remove("hidden");
         resultsPanel.classList.remove("hidden");
     }
 });

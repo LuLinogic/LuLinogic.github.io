@@ -1,53 +1,68 @@
 /* ==========================================================================
-   The Tree of Analytic Philosophy - D3 Tree Styles
+   The Tree of Analytic Philosophy - Botanical Aesthetic Stylesheet
    ========================================================================== */
+
 :root {
-    --tree-bg: #FAF9F6; 
-    --tree-trunk: #3E2723; /* 更深沉的真实树干色 */
-    --tree-branch: #795548; 
-    --tree-leaf: #689F38; /* 自然的树叶绿 */
-    --tree-leaf-hover: #7b2c25; 
+    --tree-bg: #fbfbf9; 
+    --tree-soil: #f4f1ea;
+    --tree-trunk: #4a3525; /* 胡桃木树干色 */
+    --tree-root: #3e2723;  /* 根系深褐色 */
+    --tree-branch: #6d4c41; /* 主枝棕木色 */
+    --tree-subbranch: #8d5f4f; /* 次级枝条色 */
+    --tree-leaf: #4a6b3b;   /* 森林绿叶片 */
+    --tree-leaf-hover: #7b2c25; /* 强调酒红 */
+    --tree-gold: #c59b27;   /* 古典金强调点 */
     --tree-text: #2b2b2b;
-    --tree-panel-bg: rgba(255, 255, 255, 0.95);
+    --tree-panel-bg: rgba(255, 255, 255, 0.96);
     --tree-border: #e0e0e0;
-    --cross-link-color: rgba(123, 44, 37, 0.5); 
+    --cross-link-color: rgba(123, 44, 37, 0.45); 
 }
 
-.tree-page-layout { display: flex; flex-direction: column; height: 100vh; min-height: 700px; background-color: var(--tree-bg); overflow: hidden; font-family: "Georgia", "Garamond", serif; }
-.tree-nav { padding: 15px 30px; display: flex; justify-content: space-between; font-size: 0.9em; flex-shrink: 0; background-color: var(--tree-bg); z-index: 10;}
+.tree-page-layout { display: flex; flex-direction: column; height: 100vh; min-height: 700px; background-color: var(--tree-bg); overflow: hidden; font-family: "Georgia", "Garamond", "Times New Roman", serif; }
+.tree-nav { padding: 12px 30px; display: flex; justify-content: space-between; font-size: 0.9em; flex-shrink: 0; background-color: var(--tree-bg); z-index: 10; border-bottom: 1px solid #eee; }
 .tree-workspace { flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden; }
-.tree-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); border-bottom: 1px solid var(--tree-border); border-top: 1px solid var(--tree-border); z-index: 10; }
-.breadcrumb { font-size: 0.95em; color: var(--tree-trunk); font-style: italic; }
-.canvas-controls button { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 5px 12px; margin-left: 5px; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+
+.tree-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; background: rgba(255,255,255,0.85); backdrop-filter: blur(5px); border-bottom: 1px solid var(--tree-border); z-index: 10; }
+.breadcrumb { font-size: 0.9em; color: var(--tree-trunk); font-style: italic; }
+.canvas-controls button { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 4px 10px; margin-left: 5px; cursor: pointer; font-family: inherit; transition: all 0.2s; }
 .canvas-controls button:hover { border-color: var(--tree-leaf-hover); color: var(--tree-leaf-hover); }
 
-/* SVG 画布 */
-.canvas-container { position: relative; flex-grow: 1; overflow: hidden; cursor: grab; background: #FAF9F6; }
+/* SVG 画布与土壤底色 */
+.canvas-container { position: relative; flex-grow: 1; overflow: hidden; cursor: grab; background: radial-gradient(circle at 50% 40%, #ffffff 0%, var(--tree-bg) 70%, var(--tree-soil) 100%); }
 .canvas-container:active { cursor: grabbing; }
 
-/* 底部标题 */
-.tree-bottom-title { text-align: center; padding: 12px 20px; background: #ffffff; border-top: 1px solid var(--tree-border); flex-shrink: 0; z-index: 10; }
-.tree-bottom-title h1 { font-size: 1.2em; margin: 0; color: var(--tree-trunk); font-weight: normal; letter-spacing: 2px; }
-.tree-bottom-title .subtitle { font-size: 0.75em; color: #888; letter-spacing: 1px; text-transform: uppercase; margin: 4px 0 0 0; }
+/* 底部紧凑题铭栏 */
+.tree-bottom-title { text-align: center; padding: 10px 20px; background: #ffffff; border-top: 1px solid var(--tree-border); flex-shrink: 0; z-index: 10; }
+.tree-bottom-title h1 { font-size: 1.15em; margin: 0; color: var(--tree-trunk); font-weight: normal; letter-spacing: 2px; }
+.tree-bottom-title .subtitle { font-size: 0.75em; color: #777; letter-spacing: 1px; text-transform: uppercase; margin: 3px 0 0 0; }
 
 /* ==========================================================================
-   D3.js SVG 元素样式
+   SVG 植物学元素样式
    ========================================================================== */
-.link {
+.botanical-trunk {
+    fill: url(#trunk-gradient);
+    stroke: #3e2723;
+    stroke-width: 1.5px;
+}
+
+.botanical-root {
+    fill: none;
+    stroke: var(--tree-root);
+    stroke-linecap: round;
+}
+
+.botanical-branch {
     fill: none;
     stroke: var(--tree-branch);
     stroke-linecap: round;
     stroke-linejoin: round;
-    transition: stroke 0.3s ease;
 }
-.link.trunk { stroke: var(--tree-trunk); }
-.link:hover { stroke: var(--tree-leaf-hover); }
 
 .cross-link {
     fill: none;
     stroke: var(--cross-link-color);
     stroke-width: 2px;
-    stroke-dasharray: 6, 6;
+    stroke-dasharray: 5, 5;
     opacity: 0.6;
 }
 
@@ -58,79 +73,76 @@
     stroke-width: 2px;
     transition: all 0.3s ease;
 }
-/* 不同类型节点的颜色映射 */
-.node.Trunk circle { fill: var(--tree-trunk); }
+.node.Root circle { fill: var(--tree-root); }
+.node.Trunk circle { fill: var(--tree-trunk); stroke-width: 3px; }
 .node.Field circle { fill: var(--tree-branch); }
-.node.HistoricalSource circle { fill: #8D6E63; }
 .node.Concept circle, .node.Theory circle { fill: var(--tree-leaf); }
 
-.node:hover circle { fill: var(--tree-leaf-hover); transform: scale(1.2); }
+.node:hover circle { fill: var(--tree-leaf-hover); transform: scale(1.25); }
 
 .node text {
     font-family: "Georgia", serif;
-    font-size: 14px;
+    font-size: 13px;
     fill: var(--tree-text);
-    /* 关键：白色描边使文字在越过树枝时依然清晰可读 */
-    text-shadow: 0 1px 3px rgba(255,255,255,0.9), 0 -1px 3px rgba(255,255,255,0.9), 1px 0 3px rgba(255,255,255,0.9), -1px 0 3px rgba(255,255,255,0.9);
+    text-shadow: 0 1px 3px rgba(255,255,255,0.95), 0 -1px 3px rgba(255,255,255,0.95), 1px 0 3px rgba(255,255,255,0.95), -1px 0 3px rgba(255,255,255,0.95);
 }
 
 /* ==========================================================================
-   独立悬浮搜索面板 (右上角)
+   独立悬浮搜索控件 (右上角)
    ========================================================================== */
 .floating-search-panel {
     position: absolute;
-    top: 20px;
+    top: 15px;
     right: 20px;
     width: 280px;
     z-index: 20;
-    background: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.96);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     border: 1px solid var(--tree-border);
     backdrop-filter: blur(5px);
 }
-.search-input-wrapper { position: relative; display: flex; padding: 10px; border-bottom: 1px solid transparent; }
-#tree-search-input { width: 100%; padding: 8px 30px 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 0.95em; outline: none; transition: border-color 0.2s; }
+.search-input-wrapper { position: relative; display: flex; padding: 8px 10px; }
+#tree-search-input { width: 100%; padding: 6px 28px 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 0.9em; outline: none; transition: border-color 0.2s; }
 #tree-search-input:focus { border-color: var(--tree-trunk); }
-.clear-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 18px; color: #999; cursor: pointer; }
+.clear-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 16px; color: #999; cursor: pointer; }
 .clear-btn:hover { color: var(--tree-leaf-hover); }
 
-.search-results { max-height: 250px; overflow-y: auto; text-align: left; border-top: 1px solid #eee; }
+.search-results { max-height: 220px; overflow-y: auto; text-align: left; border-top: 1px solid #eee; }
 .search-results ul { list-style: none; margin: 0; padding: 0; }
-.search-results li { padding: 10px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-size: 0.85em; color: var(--tree-text); transition: background 0.2s; }
+.search-results li { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-size: 0.85em; color: var(--tree-text); transition: background 0.2s; }
 .search-results li:hover { background: #f9f9f9; color: var(--tree-leaf-hover); }
-.external-links { padding: 10px 15px; background: #fcfcfc; font-size: 0.8em; }
-.external-label { color: #888; margin-right: 5px; }
+.external-links { padding: 8px 12px; background: #fcfcfc; font-size: 0.8em; border-top: 1px solid #eee; }
+.external-label { color: #888; margin-right: 4px; }
 .external-links a { color: var(--tree-branch); text-decoration: none; font-weight: bold; }
 .external-links a:hover { color: var(--tree-leaf-hover); text-decoration: underline; }
 
 /* ==========================================================================
-   侧边详情面板 (完全保留原有设计)
+   学术详情抽屉面板
    ========================================================================== */
-.details-panel { position: absolute; top: 0; right: -400px; width: 350px; height: 100%; background: var(--tree-panel-bg); border-left: 1px solid var(--tree-border); box-shadow: -5px 0 20px rgba(0,0,0,0.05); transition: right 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 30; backdrop-filter: blur(10px); display: flex; flex-direction: column; }
+.details-panel { position: absolute; top: 0; right: -400px; width: 360px; height: 100%; background: var(--tree-panel-bg); border-left: 1px solid var(--tree-border); box-shadow: -5px 0 25px rgba(0,0,0,0.06); transition: right 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 30; backdrop-filter: blur(10px); display: flex; flex-direction: column; }
 .details-panel.open { right: 0; }
-.close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; transition: color 0.2s; }
+.close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 22px; color: #888; cursor: pointer; transition: color 0.2s; }
 .close-btn:hover { color: var(--tree-text); }
 .panel-inner { padding: 30px 25px; overflow-y: auto; flex-grow: 1; }
-.node-badge { display: inline-block; padding: 3px 8px; background: var(--tree-bg); border: 1px solid var(--tree-branch); border-radius: 4px; font-size: 0.75em; color: var(--tree-branch); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-.node-header h2 { font-size: 1.8em; margin: 0 0 5px 0; color: var(--tree-text); line-height: 1.2; }
-.node-header h3 { font-size: 1.1em; margin: 0 0 25px 0; color: #777; font-weight: normal; }
-.info-section { margin-bottom: 25px; }
-.info-section h4 { font-size: 1em; color: var(--tree-trunk); border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px; }
-.info-section p, .info-section ul { font-size: 0.95em; color: #444; line-height: 1.6; margin: 0; }
-.info-section ul { padding-left: 20px; }
-.info-section li { margin-bottom: 5px; }
+.node-badge { display: inline-block; padding: 2px 8px; background: var(--tree-bg); border: 1px solid var(--tree-branch); border-radius: 4px; font-size: 0.7em; color: var(--tree-branch); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.node-header h2 { font-size: 1.6em; margin: 0 0 4px 0; color: var(--tree-text); line-height: 1.2; }
+.node-header h3 { font-size: 1em; margin: 0 0 20px 0; color: #666; font-weight: normal; font-style: italic; }
+.info-section { margin-bottom: 22px; }
+.info-section h4 { font-size: 0.95em; color: var(--tree-trunk); border-bottom: 1px solid #eee; padding-bottom: 4px; margin-bottom: 8px; }
+.info-section p, .info-section ul { font-size: 0.9em; color: #444; line-height: 1.6; margin: 0; }
+.info-section ul { padding-left: 18px; }
+.info-section li { margin-bottom: 4px; }
 .relations-list a { color: var(--tree-branch); text-decoration: none; border-bottom: 1px dashed var(--tree-branch); cursor: pointer; }
 .relations-list a:hover { color: var(--tree-leaf-hover); border-bottom-color: var(--tree-leaf-hover); }
 .resources-list a { color: #2980b9; text-decoration: none; }
 .resources-list a:hover { text-decoration: underline; }
-.tag-sep { color: #8e44ad; font-weight: bold; font-size: 0.85em; margin-right: 5px; }
-.tag-iep { color: #27ae60; font-weight: bold; font-size: 0.85em; margin-right: 5px; }
-.tag-wiki { color: #7f8c8d; font-size: 0.85em; margin-right: 5px; }
+.tag-sep { color: #8e44ad; font-weight: bold; font-size: 0.8em; margin-right: 4px; }
+.tag-alt { color: #27ae60; font-weight: bold; font-size: 0.8em; margin-right: 4px; }
 .hidden { display: none !important; }
 
 @media (max-width: 768px) {
-    .floating-search-panel { top: 60px; left: 10px; right: 10px; width: auto; }
+    .floating-search-panel { top: 55px; left: 10px; right: 10px; width: auto; }
     .details-panel { top: auto; bottom: -100%; right: 0; width: 100%; height: 60%; border-left: none; border-top: 1px solid var(--tree-border); box-shadow: 0 -5px 20px rgba(0,0,0,0.1); transition: bottom 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border-radius: 15px 15px 0 0; }
     .details-panel.open { bottom: 0; right: 0; }
 }

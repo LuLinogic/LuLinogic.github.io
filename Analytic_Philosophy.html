@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Tree of Analytic Philosophy | LuLinogic</title>
     
+    <!-- 引入网站现有的全局基础样式 -->
     <link rel="stylesheet" href="style.css">
+    <!-- 引入知识树专属的独立植物美学样式 -->
     <link rel="stylesheet" href="analytic_philosophy.css">
-    <!-- 引入 D3.js 核心库 (负责底层的树形防重叠算法) -->
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- 引入 D3.js 核心库 (负责局部树状布局防重叠计算) -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 </head>
 <body>
     <div class="tree-page-layout">
         
-        <!-- 顶部导航 -->
+        <!-- 顶部轻量导航 -->
         <nav class="tree-nav">
             <a href="index.html" class="nav-link">← Back to Home</a>
             <a href="logic.html" class="nav-link">Logic</a>
@@ -22,10 +24,10 @@
         <!-- 核心工作区 -->
         <main class="tree-workspace">
             
-            <!-- 工具栏：路径与缩放控制 -->
+            <!-- 路径与视角工具栏 -->
             <div class="tree-toolbar">
                 <div class="breadcrumb">
-                    <span id="current-path">Path: Roots</span>
+                    <span id="current-path">Path: The Tree of Analytic Philosophy</span>
                 </div>
                 <div class="canvas-controls">
                     <button id="btn-zoom-in" title="Zoom In">+</button>
@@ -35,16 +37,15 @@
                 </div>
             </div>
 
-            <!-- 核心画布容器 -->
+            <!-- 画布容器：承载具有生命形态的 SVG 树木 -->
             <div id="tree-canvas-container" class="canvas-container">
-                <!-- SVG 树木绘制区域 -->
                 <svg id="philosophy-tree-svg" width="100%" height="100%"></svg>
             </div>
 
-            <!-- ★ 重构：独立的悬浮搜索控件，放置在右上角 -->
+            <!-- 独立悬浮搜索控件（支持全库穿透检索与外部学术引擎） -->
             <div class="floating-search-panel">
                 <div class="search-input-wrapper">
-                    <input type="text" id="tree-search-input" placeholder="Search the tree..." autocomplete="off">
+                    <input type="text" id="tree-search-input" placeholder="Search tree or philosophers..." autocomplete="off">
                     <button id="btn-clear-search" class="clear-btn hidden" title="Clear search">×</button>
                 </div>
                 <div id="search-results-panel" class="search-results hidden">
@@ -53,6 +54,7 @@
                         <span class="external-label">External:</span>
                         <a id="link-sep" href="#" target="_blank">SEP</a> | 
                         <a id="link-iep" href="#" target="_blank">IEP</a> | 
+                        <a id="link-scholar" href="#" target="_blank">Scholar</a> | 
                         <a id="link-wiki" href="#" target="_blank">Wiki</a>
                     </div>
                 </div>
@@ -60,13 +62,13 @@
 
         </main>
 
-        <!-- 紧凑底部标题 -->
+        <!-- 底部紧凑题铭栏 -->
         <div class="tree-bottom-title">
             <h1>The Tree of Analytic Philosophy</h1>
             <p class="subtitle">A Living Map of Philosophical Ideas, Concepts and Arguments.</p>
         </div>
 
-        <!-- 侧边详情面板 -->
+        <!-- 右侧学术详情抽屉面板 -->
         <aside id="node-details-panel" class="details-panel hidden">
             <button id="btn-close-panel" class="close-btn" title="Close Panel">×</button>
             <div class="panel-inner">
@@ -77,19 +79,19 @@
                 </div>
                 <div class="node-body">
                     <div class="info-section">
-                        <h4>Overview</h4>
+                        <h4>Overview / 学术概述</h4>
                         <p id="detail-description">Description will appear here.</p>
                     </div>
                     <div id="section-philosophers" class="info-section hidden">
-                        <h4>Key Philosophers</h4>
+                        <h4>Key Philosophers / 相关哲学家</h4>
                         <ul id="detail-philosophers"></ul>
                     </div>
                     <div id="section-relations" class="info-section hidden">
-                        <h4>Relations</h4>
+                        <h4>Cross-References / 跨学科关联</h4>
                         <ul id="detail-relations" class="relations-list"></ul>
                     </div>
                     <div id="section-resources" class="info-section hidden">
-                        <h4>Academic Resources</h4>
+                        <h4>Academic Resources / 学术文献链接</h4>
                         <ul id="detail-resources" class="resources-list"></ul>
                     </div>
                 </div>
@@ -98,7 +100,7 @@
 
     </div>
 
-    <!-- 依次引入严格的数据结构和 D3 交互引擎 -->
+    <!-- 依次引入知识数据库与植物学渲染交互引擎 -->
     <script src="analytic_philosophy_data.js"></script>
     <script src="analytic_philosophy.js"></script>
 </body>

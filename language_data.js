@@ -279,6 +279,54 @@
             },
 
 
+{
+    id: "linguistic_terms",
+
+    title: "语言学名词",
+
+    author: "语言学名词审定委员会",
+
+    itemType: "reference-dictionary",
+
+    publicationInfo:
+        "北京：商务印书馆，2011",
+
+    publisher: "商务印书馆",
+
+    publicationYear: 2011,
+
+    category:
+        "Linguistic Terminology",
+
+    language: "Chinese",
+
+    entryCount: 2939,
+
+    partCount: 13,
+
+    cover:
+        "./assets/books/linguistic-terms/cover.jpg",
+
+    pdfUrl:
+        "./assets/books/linguistic-terms/original/linguistic-terms.pdf",
+
+    tableOfContents: linguisticTermsTOC,
+
+    keywords: [
+        "语言学名词",
+        "理论语言学",
+        "文字学",
+        "语音学",
+        "语法学",
+        "语义学",
+        "计算语言学",
+        "社会语言学"
+    ],
+
+    pages: []
+}
+
+
             {
                 id: "bloomfield_language",
 

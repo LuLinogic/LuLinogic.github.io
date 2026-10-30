@@ -3,192 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytic Philosophy | LuLinogic</title>
+    <title>The Tree of Analytic Philosophy | LuLinogic</title>
+    
+    <!-- 引入网站现有的全局基础样式 (保留字体和颜色变量) -->
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* 知识树专属交互样式 */
-        .tree-container {
-            margin: 40px auto;
-            max-width: 700px;
-            font-family: "Georgia", "Garamond", serif;
-            background: #ffffff;
-            padding: 30px;
-            border: 1px solid #eaeaea;
-            border-radius: 12px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.03);
-        }
-        
-        details {
-            margin-left: 20px;
-            margin-bottom: 10px;
-        }
-
-        /* 移除默认三角形，自定义加减号图标 */
-        details > summary {
-            cursor: pointer;
-            font-size: 1.3em;
-            color: var(--accent-color);
-            list-style: none;
-            position: relative;
-            padding-left: 25px;
-            transition: color 0.3s ease;
-        }
-        
-        details > summary::-webkit-details-marker {
-            display: none;
-        }
-
-        details > summary::before {
-            content: "+";
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.2em;
-            font-weight: bold;
-            color: var(--text-light);
-        }
-
-        details[open] > summary::before {
-            content: "−";
-        }
-
-        details > summary:hover {
-            color: var(--text-main);
-        }
-
-        /* 子节点列表样式 */
-        .tree-node-list {
-            margin: 10px 0 15px 25px;
-            padding-left: 15px;
-            border-left: 1px dashed #ccc; /* 树干虚线 */
-        }
-
-        .tree-leaf {
-            margin-bottom: 10px;
-            font-size: 1.05em;
-            position: relative;
-        }
-
-        /* 树枝虚线 */
-        .tree-leaf::before {
-            content: "";
-            position: absolute;
-            left: -15px;
-            top: 12px;
-            width: 10px;
-            height: 1px;
-            background-color: #ccc;
-        }
-
-        .tree-leaf a {
-            color: var(--text-main);
-            text-decoration: none;
-            border-bottom: 1px dotted var(--text-light);
-            transition: all 0.2s ease;
-        }
-
-        .tree-leaf a:hover {
-            color: var(--accent-color);
-            border-bottom: 1px solid var(--accent-color);
-            background-color: #fbfbf9;
-        }
-
-        .sep-tag {
-            font-size: 0.75em;
-            background-color: var(--bg-color);
-            color: var(--text-light);
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 8px;
-            border: 1px solid #eaeaea;
-        }
-    </style>
+    
+    <!-- 引入知识树专属的独立样式 (下一阶段生成) -->
+    <link rel="stylesheet" href="analytic_philosophy.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Analytic Philosophy</h1>
-            <p class="subtitle"><a href="index.html" class="nav-link">← Back to Home</a></p>
+    <div class="tree-page-layout">
+        
+        <!-- 顶部轻量级导航 -->
+        <nav class="tree-nav">
+            <a href="index.html" class="nav-link">← Back to Home</a>
+            <a href="logic.html" class="nav-link">Logic</a>
+        </nav>
+
+        <!-- 网页头部标题 -->
+        <header class="tree-header">
+            <h1>The Tree of Analytic Philosophy</h1>
+            <p class="subtitle">A Living Map of Philosophical Ideas, Concepts and Arguments.</p>
         </header>
 
-        <main>
-            <section class="intro" style="text-align: center;">
-                <p>An interactive conceptual tree mapped to the <strong>Stanford Encyclopedia of Philosophy (SEP)</strong> entries. Click on any branch to expand the nodes and explore foundational topics.</p>
-            </section>
-
-            <!-- 知识树结构开始 -->
-            <div class="tree-container">
-                
-                <!-- 1. 心灵哲学 -->
-                <details>
-                    <summary>Philosophy of Mind (心灵哲学)</summary>
-                    <div class="tree-node-list">
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/mind-identity/" target="_blank">The Mind/Brain Identity Theory (心脑同一论)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/dualism/" target="_blank">Dualism (二元论)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/functionalism/" target="_blank">Functionalism (功能主义)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/consciousness/" target="_blank">Consciousness & Qualia (意识与感受质)</a> <span class="sep-tag">SEP</span></div>
-                        <!-- 历史哲学家的心灵观探讨 -->
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/plato/" target="_blank">Plato on the Soul (柏拉图论灵魂)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/aristotle-psychology/" target="_blank">Aristotle's Psychology (亚里士多德的心理学/灵魂观)</a> <span class="sep-tag">SEP</span></div>
-                    </div>
-                </details>
-
-                <!-- 2. 语言哲学 -->
-                <details>
-                    <summary>Philosophy of Language (语言哲学)</summary>
-                    <div class="tree-node-list">
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/frege/" target="_blank">Frege: Sense and Reference (弗雷格：涵义与指称)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/descriptions/" target="_blank">Russell: Definite Descriptions (罗素：限定摹状词)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/speech-acts/" target="_blank">Speech Acts (言语行为理论)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/wittgenstein/" target="_blank">Wittgenstein: Meaning as Use (维特根斯坦：意义即使用)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/meaning/" target="_blank">Truth-Conditional Semantics (真值条件语义学)</a> <span class="sep-tag">SEP</span></div>
-                    </div>
-                </details>
-
-                <!-- 3. 认识论 -->
-                <details>
-                    <summary>Epistemology (认识论/知识论)</summary>
-                    <div class="tree-node-list">
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/knowledge-analysis/" target="_blank">The Analysis of Knowledge: JTB & Gettier (知识的分析与盖梯尔问题)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/justep-foundational/" target="_blank">Foundationalism (基础主义)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/justep-coherence/" target="_blank">Coherentism (融贯论)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/reliabilism/" target="_blank">Reliabilism (可靠论)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/epistemology-virtue/" target="_blank">Virtue Epistemology (德性认识论)</a> <span class="sep-tag">SEP</span></div>
-                    </div>
-                </details>
-
-                <!-- 4. 科学哲学 -->
-                <details>
-                    <summary>Philosophy of Science (科学哲学)</summary>
-                    <div class="tree-node-list">
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/scientific-explanation/" target="_blank">Scientific Explanation (科学解释)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/scientific-realism/" target="_blank">Scientific Realism & Anti-Realism (科学实在论与反实在论)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/thomas-kuhn/" target="_blank">Kuhn: Paradigms & Incommensurability (库恩：范式与不可通约性)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/popper/" target="_blank">Popper: Falsificationism (波普尔：证伪主义)</a> <span class="sep-tag">SEP</span></div>
-                    </div>
-                </details>
-
-                <!-- 5. 行动哲学 -->
-                <details>
-                    <summary>Philosophy of Action (行动哲学)</summary>
-                    <div class="tree-node-list">
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/agency/" target="_blank">Agency (能动性)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/intentionality/" target="_blank">Intentionality (意向性)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/reasons-just-vs-expl/" target="_blank">Reasons for Action (行动的理由：规范性与解释性)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/freewill/" target="_blank">Free Will & Determinism (自由意志与决定论)</a> <span class="sep-tag">SEP</span></div>
-                        <div class="tree-leaf"><a href="https://plato.stanford.edu/entries/compatibilism/" target="_blank">Compatibilism (相容论)</a> <span class="sep-tag">SEP</span></div>
-                    </div>
-                </details>
-
+        <!-- 知识树核心工作区 -->
+        <main class="tree-workspace">
+            
+            <!-- 顶部工具栏：路径导航与视角控制 -->
+            <div class="tree-toolbar">
+                <div class="breadcrumb">
+                    <span id="current-path">Path: Roots</span>
+                </div>
+                <div class="canvas-controls">
+                    <button id="btn-zoom-in" title="Zoom In">+</button>
+                    <button id="btn-zoom-out" title="Zoom Out">-</button>
+                    <button id="btn-reset-view">Reset View</button>
+                    <button id="btn-collapse-all">Collapse All</button>
+                </div>
             </div>
-            <!-- 知识树结构结束 -->
 
+            <!-- 核心画布容器 (包含交互SVG树与嵌入式搜索框) -->
+            <div id="tree-canvas-container" class="canvas-container">
+                
+                <!-- 嵌入树干的 Search 搜索中心 -->
+                <div id="trunk-search-center" class="trunk-search-box">
+                    <label for="tree-search-input" class="search-label">Search the Tree of Philosophy</label>
+                    <div class="search-input-wrapper">
+                        <input type="text" id="tree-search-input" placeholder="Search concepts, theories, philosophers..." autocomplete="off">
+                        <button id="btn-clear-search" class="clear-btn hidden" title="Clear search">×</button>
+                    </div>
+                    <!-- 本地搜索结果与外部检索入口面板 -->
+                    <div id="search-results-panel" class="search-results hidden">
+                        <ul id="local-results-list"></ul>
+                        <div id="external-search-links" class="external-links hidden">
+                            <span class="external-label">Search externally on:</span>
+                            <a id="link-sep" href="#" target="_blank">SEP</a> | 
+                            <a id="link-iep" href="#" target="_blank">IEP</a> | 
+                            <a id="link-wiki" href="#" target="_blank">Wikipedia</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SVG 树木绘制区域 (由 JavaScript 接管绘制) -->
+                <svg id="philosophy-tree-svg" width="100%" height="100%"></svg>
+                
+            </div>
         </main>
 
-        <footer>
-            <p>© 2026 Lu Lingfeng. Stay rational, stay in awe.</p>
-        </footer>
+        <!-- 右侧/底部 节点学术详情面板 (默认隐藏) -->
+        <aside id="node-details-panel" class="details-panel hidden">
+            <button id="btn-close-panel" class="close-btn" title="Close Panel">×</button>
+            <div class="panel-inner">
+                <div class="node-header">
+                    <span id="detail-type" class="node-badge">Concept</span>
+                    <h2 id="detail-title-en">Node Name</h2>
+                    <h3 id="detail-title-zh">节点中文名</h3>
+                </div>
+                
+                <div class="node-body">
+                    <div class="info-section">
+                        <h4>Overview</h4>
+                        <p id="detail-description">Description will appear here.</p>
+                    </div>
+                    
+                    <div id="section-philosophers" class="info-section hidden">
+                        <h4>Key Philosophers</h4>
+                        <ul id="detail-philosophers"></ul>
+                    </div>
+                    
+                    <div id="section-relations" class="info-section hidden">
+                        <h4>Relations</h4>
+                        <ul id="detail-relations" class="relations-list"></ul>
+                    </div>
+                    
+                    <div id="section-resources" class="info-section hidden">
+                        <h4>Academic Resources</h4>
+                        <ul id="detail-resources" class="resources-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
     </div>
+
+    <!-- 依次引入数据结构和交互逻辑脚本 -->
+    <script src="analytic_philosophy_data.js"></script>
+    <script src="analytic_philosophy.js"></script>
 </body>
 </html>

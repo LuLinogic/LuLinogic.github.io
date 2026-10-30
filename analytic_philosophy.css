@@ -4,24 +4,27 @@
 
 :root {
     --tree-bg: #FAF9F6; 
-    --tree-trunk: #4A3525; /* 加深树干颜色，显得稳重 */
+    --tree-trunk: #4A3525; 
     --tree-branch: #70543E; 
     --tree-leaf: #556B2F; 
     --tree-leaf-hover: #7b2c25; 
     --tree-text: #2b2b2b;
     --tree-panel-bg: rgba(255, 255, 255, 0.95);
     --tree-border: #e0e0e0;
-    --cross-link-color: rgba(123, 44, 37, 0.4); /* 跨领域虚线的浅酒红色 */
+    --cross-link-color: rgba(123, 44, 37, 0.4); 
 }
 
-/* 基础布局保持不变 */
+/* 基础布局：充满视口，移除导致间隙的默认样式 */
 .tree-page-layout { display: flex; flex-direction: column; height: 100vh; min-height: 700px; background-color: var(--tree-bg); overflow: hidden; font-family: "Georgia", "Garamond", serif; }
-.tree-nav { padding: 15px 30px; display: flex; justify-content: space-between; font-size: 0.9em; }
-.tree-header { text-align: center; padding: 10px 20px 20px; flex-shrink: 0; }
-.tree-header h1 { font-size: 2.2em; margin: 0 0 5px 0; color: var(--tree-trunk); }
-.tree-header .subtitle { font-size: 0.9em; color: #666; letter-spacing: 1px; text-transform: uppercase; }
-.tree-workspace { flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden; border-top: 1px solid var(--tree-border); }
-.tree-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #ffffff; border-bottom: 1px solid var(--tree-border); z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+
+/* 纯净的顶部导航 */
+.tree-nav { padding: 15px 30px; display: flex; justify-content: space-between; font-size: 0.9em; flex-shrink: 0; background-color: var(--tree-bg); }
+
+/* 核心工作区：移除顶边框，让它直接无缝贴合顶部导航 */
+.tree-workspace { flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow: hidden; }
+
+/* 工具栏 */
+.tree-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #ffffff; border-bottom: 1px solid var(--tree-border); border-top: 1px solid var(--tree-border); z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
 .breadcrumb { font-size: 0.95em; color: var(--tree-trunk); font-style: italic; }
 .canvas-controls button { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 5px 12px; margin-left: 5px; cursor: pointer; font-family: inherit; transition: all 0.2s; }
 .canvas-controls button:hover { border-color: var(--tree-leaf-hover); color: var(--tree-leaf-hover); }
@@ -31,75 +34,61 @@
 .canvas-container:active { cursor: grabbing; }
 
 /* ==========================================================================
-   SVG 树枝连线与节点样式
+   新增：放置在树结构下方的紧凑标题栏
    ========================================================================== */
-
-/* 实体树枝（归属关系）：粗细将由 JS 根据层级动态设置 */
-.tree-link {
-    fill: none;
-    stroke: var(--tree-branch);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: stroke 0.3s ease;
+.tree-bottom-title {
+    text-align: center;
+    padding: 12px 20px;
+    background: #ffffff;
+    border-top: 1px solid var(--tree-border);
+    flex-shrink: 0;
+    z-index: 10;
 }
-.tree-link.root-link { stroke: var(--tree-trunk); }
-.tree-link:hover { stroke: var(--tree-leaf-hover); }
-
-/* 新增：跨领域虚线连线（关联关系） */
-.cross-link {
-    fill: none;
-    stroke: var(--cross-link-color);
-    stroke-width: 2px;
-    stroke-dasharray: 6, 6;
-    opacity: 0.7;
-    transition: opacity 0.3s ease, stroke 0.3s ease;
+.tree-bottom-title h1 {
+    font-size: 1.2em; /* 压缩字体大小 */
+    margin: 0;
+    color: var(--tree-trunk);
+    font-weight: normal;
+    letter-spacing: 2px;
 }
-.cross-link:hover {
-    opacity: 1;
-    stroke: var(--tree-leaf-hover);
-    stroke-width: 3px;
-}
-
-/* 节点容器 */
-.tree-node { cursor: pointer; }
-.tree-node circle {
-    fill: var(--tree-leaf);
-    stroke: #ffffff;
-    stroke-width: 2px;
-    transition: all 0.3s ease;
-}
-.tree-node:hover circle { fill: var(--tree-leaf-hover); transform: scale(1.3); }
-
-/* 核心节点特例化颜色 */
-.tree-node.node-trunk circle { fill: var(--tree-trunk); stroke-width: 3px; }
-.tree-node.node-field circle { fill: var(--tree-branch); }
-.tree-node.node-root circle { fill: #3E2723; }
-
-/* 节点文字，新增文字背景遮罩防止与树枝重叠看不清 */
-.tree-node text {
-    font-family: "Georgia", serif;
-    font-size: 14px;
-    fill: var(--tree-text);
-    pointer-events: none;
-    text-shadow: 
-        2px 2px 2px rgba(255,255,255,0.9), 
-        -2px -2px 2px rgba(255,255,255,0.9),
-        2px -2px 2px rgba(255,255,255,0.9),
-        -2px 2px 2px rgba(255,255,255,0.9);
+.tree-bottom-title .subtitle {
+    font-size: 0.75em; /* 压缩副标题 */
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 4px 0 0 0;
 }
 
 /* ==========================================================================
-   垂直树干适配：搜索框重定位
+   SVG 树枝连线与节点样式
+   ========================================================================== */
+.tree-link { fill: none; stroke: var(--tree-branch); stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.3s ease; }
+.tree-link.root-link { stroke: var(--tree-trunk); }
+.tree-link:hover { stroke: var(--tree-leaf-hover); }
+.cross-link { fill: none; stroke: var(--cross-link-color); stroke-width: 2px; stroke-dasharray: 6, 6; opacity: 0.7; transition: opacity 0.3s ease, stroke 0.3s ease; }
+.cross-link:hover { opacity: 1; stroke: var(--tree-leaf-hover); stroke-width: 3px; }
+.tree-node { cursor: pointer; }
+.tree-node circle { fill: var(--tree-leaf); stroke: #ffffff; stroke-width: 2px; transition: all 0.3s ease; }
+.tree-node:hover circle { fill: var(--tree-leaf-hover); transform: scale(1.3); }
+.tree-node.node-trunk circle { fill: var(--tree-trunk); stroke-width: 3px; }
+.tree-node.node-field circle { fill: var(--tree-branch); }
+.tree-node.node-root circle { fill: #3E2723; }
+.tree-node text {
+    font-family: "Georgia", serif; font-size: 14px; fill: var(--tree-text); pointer-events: none;
+    text-shadow: 2px 2px 2px rgba(255,255,255,0.9), -2px -2px 2px rgba(255,255,255,0.9), 2px -2px 2px rgba(255,255,255,0.9), -2px 2px 2px rgba(255,255,255,0.9);
+}
+
+/* ==========================================================================
+   垂直树干适配：搜索框定位
    ========================================================================== */
 .trunk-search-box {
     position: absolute;
-    /* 从原先的中心 (50%, 50%) 改为偏下方，贴合真实的垂直树干基部 */
-    bottom: 40px; 
+    bottom: 30px; /* 稍微贴合底部边缘 */
     left: 50%;
     transform: translateX(-50%); 
     z-index: 20;
     width: 320px;
-    background: rgba(74, 53, 37, 0.95); /* 匹配新的深树干色 */
+    background: rgba(74, 53, 37, 0.95); 
     padding: 15px 20px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -124,7 +113,7 @@
 .external-links a:hover { color: var(--tree-leaf-hover); text-decoration: underline; }
 
 /* ==========================================================================
-   侧边栏详情面板 (保持不变)
+   侧边栏详情面板
    ========================================================================== */
 .details-panel { position: absolute; top: 0; right: -400px; width: 350px; height: 100%; background: var(--tree-panel-bg); border-left: 1px solid var(--tree-border); box-shadow: -5px 0 20px rgba(0,0,0,0.05); transition: right 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 30; backdrop-filter: blur(10px); display: flex; flex-direction: column; }
 .details-panel.open { right: 0; }
@@ -150,7 +139,7 @@
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .tree-header h1 { font-size: 1.6em; }
+    .tree-bottom-title h1 { font-size: 1.1em; }
     .trunk-search-box { width: 85%; padding: 15px; bottom: 20px; }
     .details-panel { top: auto; bottom: -100%; right: 0; width: 100%; height: 60%; border-left: none; border-top: 1px solid var(--tree-border); box-shadow: 0 -5px 20px rgba(0,0,0,0.1); transition: bottom 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border-radius: 15px 15px 0 0; }
     .details-panel.open { bottom: 0; right: 0; }

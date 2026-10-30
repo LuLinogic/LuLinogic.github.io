@@ -13,25 +13,19 @@
 <body>
     <div class="tree-page-layout">
         
-        <!-- 顶部导航 -->
+        <!-- 顶部导航：只保留纯净的返回按钮 -->
         <nav class="tree-nav">
             <a href="index.html" class="nav-link">← Back to Home</a>
             <a href="logic.html" class="nav-link">Logic</a>
         </nav>
 
-        <!-- 网页头部标题 -->
-        <header class="tree-header">
-            <h1>The Tree of Analytic Philosophy</h1>
-            <p class="subtitle">A Living Map of Philosophical Ideas, Concepts and Arguments.</p>
-        </header>
-
-        <!-- 知识树核心工作区 -->
+        <!-- 知识树核心工作区：直接紧贴顶部导航 -->
         <main class="tree-workspace">
             
-            <!-- 顶部工具栏：保留原有缩放、重置和路径导航 -->
+            <!-- 顶部工具栏：路径与缩放控制 -->
             <div class="tree-toolbar">
                 <div class="breadcrumb">
-                    <span id="current-path">Path: Roots</span>
+                    <span id="current-path">Path: Trunk</span>
                 </div>
                 <div class="canvas-controls">
                     <button id="btn-zoom-in" title="Zoom In">+</button>
@@ -44,7 +38,7 @@
             <!-- 核心画布容器 -->
             <div id="tree-canvas-container" class="canvas-container">
                 
-                <!-- 嵌入树干的搜索框：现在将由 CSS 控制定位在树干下半部 -->
+                <!-- 嵌入树干的搜索框 -->
                 <div id="trunk-search-center" class="trunk-search-box vertical-trunk-mode">
                     <label for="tree-search-input" class="search-label">Search the Tree</label>
                     <div class="search-input-wrapper">
@@ -69,7 +63,13 @@
             </div>
         </main>
 
-        <!-- 侧边详情面板：保持原有功能不变 -->
+        <!-- 将大标题压缩为精致的底部栏，放置在树结构下方 -->
+        <div class="tree-bottom-title">
+            <h1>The Tree of Analytic Philosophy</h1>
+            <p class="subtitle">A Living Map of Philosophical Ideas, Concepts and Arguments.</p>
+        </div>
+
+        <!-- 侧边详情面板 -->
         <aside id="node-details-panel" class="details-panel hidden">
             <button id="btn-close-panel" class="close-btn" title="Close Panel">×</button>
             <div class="panel-inner">

@@ -5,16 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Tree of Analytic Philosophy | LuLinogic</title>
     
-    <!-- 引入网站现有的全局基础样式 (保留字体和颜色变量) -->
+    <!-- 引入网站现有的全局基础样式 -->
     <link rel="stylesheet" href="style.css">
-    
-    <!-- 引入知识树专属的独立样式 (下一阶段生成) -->
+    <!-- 引入知识树专属的独立样式 -->
     <link rel="stylesheet" href="analytic_philosophy.css">
 </head>
 <body>
     <div class="tree-page-layout">
         
-        <!-- 顶部轻量级导航 -->
+        <!-- 顶部导航 -->
         <nav class="tree-nav">
             <a href="index.html" class="nav-link">← Back to Home</a>
             <a href="logic.html" class="nav-link">Logic</a>
@@ -29,7 +28,7 @@
         <!-- 知识树核心工作区 -->
         <main class="tree-workspace">
             
-            <!-- 顶部工具栏：路径导航与视角控制 -->
+            <!-- 顶部工具栏：保留原有缩放、重置和路径导航 -->
             <div class="tree-toolbar">
                 <div class="breadcrumb">
                     <span id="current-path">Path: Roots</span>
@@ -42,17 +41,17 @@
                 </div>
             </div>
 
-            <!-- 核心画布容器 (包含交互SVG树与嵌入式搜索框) -->
+            <!-- 核心画布容器 -->
             <div id="tree-canvas-container" class="canvas-container">
                 
-                <!-- 嵌入树干的 Search 搜索中心 -->
-                <div id="trunk-search-center" class="trunk-search-box">
-                    <label for="tree-search-input" class="search-label">Search the Tree of Philosophy</label>
+                <!-- 嵌入树干的搜索框：现在将由 CSS 控制定位在树干下半部 -->
+                <div id="trunk-search-center" class="trunk-search-box vertical-trunk-mode">
+                    <label for="tree-search-input" class="search-label">Search the Tree</label>
                     <div class="search-input-wrapper">
                         <input type="text" id="tree-search-input" placeholder="Search concepts, theories, philosophers..." autocomplete="off">
                         <button id="btn-clear-search" class="clear-btn hidden" title="Clear search">×</button>
                     </div>
-                    <!-- 本地搜索结果与外部检索入口面板 -->
+                    <!-- 搜索结果面板 -->
                     <div id="search-results-panel" class="search-results hidden">
                         <ul id="local-results-list"></ul>
                         <div id="external-search-links" class="external-links hidden">
@@ -64,13 +63,13 @@
                     </div>
                 </div>
 
-                <!-- SVG 树木绘制区域 (由 JavaScript 接管绘制) -->
+                <!-- SVG 树木绘制区域 -->
                 <svg id="philosophy-tree-svg" width="100%" height="100%"></svg>
                 
             </div>
         </main>
 
-        <!-- 右侧/底部 节点学术详情面板 (默认隐藏) -->
+        <!-- 侧边详情面板：保持原有功能不变 -->
         <aside id="node-details-panel" class="details-panel hidden">
             <button id="btn-close-panel" class="close-btn" title="Close Panel">×</button>
             <div class="panel-inner">

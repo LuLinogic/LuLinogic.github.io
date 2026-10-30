@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Tree of Analytic Philosophy | LuLinogic</title>
     
-    <!-- 引入网站现有的全局基础样式 -->
     <link rel="stylesheet" href="style.css">
-    <!-- 引入知识树专属的独立样式 -->
     <link rel="stylesheet" href="analytic_philosophy.css">
+    <!-- 引入 D3.js 核心库 (负责底层的树形防重叠算法) -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <div class="tree-page-layout">
         
-        <!-- 顶部导航：只保留纯净的返回按钮 -->
+        <!-- 顶部导航 -->
         <nav class="tree-nav">
             <a href="index.html" class="nav-link">← Back to Home</a>
             <a href="logic.html" class="nav-link">Logic</a>
         </nav>
 
-        <!-- 知识树核心工作区：直接紧贴顶部导航 -->
+        <!-- 核心工作区 -->
         <main class="tree-workspace">
             
-            <!-- 顶部工具栏：路径与缩放控制 -->
+            <!-- 工具栏：路径与缩放控制 -->
             <div class="tree-toolbar">
                 <div class="breadcrumb">
-                    <span id="current-path">Path: Trunk</span>
+                    <span id="current-path">Path: Roots</span>
                 </div>
                 <div class="canvas-controls">
                     <button id="btn-zoom-in" title="Zoom In">+</button>
@@ -37,33 +37,30 @@
 
             <!-- 核心画布容器 -->
             <div id="tree-canvas-container" class="canvas-container">
-                
-                <!-- 嵌入树干的搜索框 -->
-                <div id="trunk-search-center" class="trunk-search-box vertical-trunk-mode">
-                    <label for="tree-search-input" class="search-label">Search the Tree</label>
-                    <div class="search-input-wrapper">
-                        <input type="text" id="tree-search-input" placeholder="Search concepts, theories, philosophers..." autocomplete="off">
-                        <button id="btn-clear-search" class="clear-btn hidden" title="Clear search">×</button>
-                    </div>
-                    <!-- 搜索结果面板 -->
-                    <div id="search-results-panel" class="search-results hidden">
-                        <ul id="local-results-list"></ul>
-                        <div id="external-search-links" class="external-links hidden">
-                            <span class="external-label">Search externally on:</span>
-                            <a id="link-sep" href="#" target="_blank">SEP</a> | 
-                            <a id="link-iep" href="#" target="_blank">IEP</a> | 
-                            <a id="link-wiki" href="#" target="_blank">Wikipedia</a>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- SVG 树木绘制区域 -->
                 <svg id="philosophy-tree-svg" width="100%" height="100%"></svg>
-                
             </div>
+
+            <!-- ★ 重构：独立的悬浮搜索控件，放置在右上角 -->
+            <div class="floating-search-panel">
+                <div class="search-input-wrapper">
+                    <input type="text" id="tree-search-input" placeholder="Search the tree..." autocomplete="off">
+                    <button id="btn-clear-search" class="clear-btn hidden" title="Clear search">×</button>
+                </div>
+                <div id="search-results-panel" class="search-results hidden">
+                    <ul id="local-results-list"></ul>
+                    <div id="external-search-links" class="external-links hidden">
+                        <span class="external-label">External:</span>
+                        <a id="link-sep" href="#" target="_blank">SEP</a> | 
+                        <a id="link-iep" href="#" target="_blank">IEP</a> | 
+                        <a id="link-wiki" href="#" target="_blank">Wiki</a>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
-        <!-- 将大标题压缩为精致的底部栏，放置在树结构下方 -->
+        <!-- 紧凑底部标题 -->
         <div class="tree-bottom-title">
             <h1>The Tree of Analytic Philosophy</h1>
             <p class="subtitle">A Living Map of Philosophical Ideas, Concepts and Arguments.</p>
@@ -78,23 +75,19 @@
                     <h2 id="detail-title-en">Node Name</h2>
                     <h3 id="detail-title-zh">节点中文名</h3>
                 </div>
-                
                 <div class="node-body">
                     <div class="info-section">
                         <h4>Overview</h4>
                         <p id="detail-description">Description will appear here.</p>
                     </div>
-                    
                     <div id="section-philosophers" class="info-section hidden">
                         <h4>Key Philosophers</h4>
                         <ul id="detail-philosophers"></ul>
                     </div>
-                    
                     <div id="section-relations" class="info-section hidden">
                         <h4>Relations</h4>
                         <ul id="detail-relations" class="relations-list"></ul>
                     </div>
-                    
                     <div id="section-resources" class="info-section hidden">
                         <h4>Academic Resources</h4>
                         <ul id="detail-resources" class="resources-list"></ul>
@@ -105,7 +98,7 @@
 
     </div>
 
-    <!-- 依次引入数据结构和交互逻辑脚本 -->
+    <!-- 依次引入严格的数据结构和 D3 交互引擎 -->
     <script src="analytic_philosophy_data.js"></script>
     <script src="analytic_philosophy.js"></script>
 </body>

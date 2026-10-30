@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101b2b">
+  <meta name="description" content="LuLinogic — a personal exploration of linguistics, language, meaning, and computation.">
+
+  <title>Language | LuLinogic</title>
+
+  <link rel="stylesheet" href="./language.css">
+  <link rel="stylesheet" href="./language_panels.css">
+
+  <script src="./language_data.js" defer></script>
+  <script src="./language.js" defer></script>
+  <script src="./language_panels.js" defer></script>
+</head>
+
+<body>
+
+  <a class="skip-link" href="#study-room">
+    Skip to the study room
+  </a>
+
+  <!-- ======================================
+       1. SITE HEADER
+  ======================================= -->
+
+  <header class="site-header">
+
+    <div class="header-inner">
+
+      <a class="brand" href="./index.html" aria-label="LuLinogic home">
+        <span class="brand-mark" aria-hidden="true">L</span>
+        <span class="brand-name">LuLinogic</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+
+        <a href="./index.html">Home</a>
+
+        <a class="is-current"
+           href="#language-home"
+           aria-current="page">
+          Language
+        </a>
+
+        <a href="#study-room">Study Room</a>
+
+        <a href="#about">About</a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main>
+
+    <!-- ======================================
+         2. LANGUAGE HOMEPAGE
+    ======================================= -->
+
+    <section
+      class="page-intro"
+      id="language-home"
+      aria-labelledby="page-title"
+    >
+
+      <div class="intro-copy">
+
+        <p class="eyebrow">
+          A PERSONAL FIELD OF INQUIRY
+        </p>
+
+        <h1 id="page-title">
+          Language<span class="title-period">.</span>
+        </h1>
+
+        <p class="page-subtitle">
+          Linguistics and the Structure of Language
+        </p>
+
+        <p class="intro-description">
+          An evolving study of language, meaning, structure, and computation —
+          from the foundations of linguistic theory to the formal study of mind
+          and communication.
+        </p>
+
+      </div>
+
+
+      <div class="intro-side-note" aria-label="Topics">
+
+        <span>Language</span>
+
+        <span class="note-divider" aria-hidden="true"></span>
+
+        <span>Meaning</span>
+
+        <span class="note-divider" aria-hidden="true"></span>
+
+        <span>Mind</span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ======================================
+         3. INTERACTIVE STUDY ROOM
+    ======================================= -->
+
+    <section
+      class="study-section"
+      id="study-room"
+      aria-labelledby="study-room-title"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            POINT · CLICK · DISCOVER
+          </p>
+
+          <h2 id="study-room-title">
+            Welcome to My Linguistics Study Room
+          </h2>
+
+          <p class="section-instruction">
+            Click on the objects to explore.
+          </p>
+
+        </div>
+
+
+        <div class="scene-key" aria-hidden="true">
+
+          <span class="key-dot"></span>
+
+          <span>Interactive objects</span>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ======================================
+           ORIGINAL IMAGE AND SVG OVERLAY
+      ======================================= -->
+
+      <div class="scene-frame"
+           aria-label="Interactive illustration of a linguistics study room">
+
+        <div class="scene-image-wrap">
+
+          <img
+            class="study-room-image"
+            src="./Language_Steam.png"
+            width="2048"
+            height="1143"
+            alt="A cozy evening study room with books, computer monitors, an open notebook and a silver-haired student."
+            draggable="false"
+          >
+
+
+          <svg
+            class="scene-hotspots"
+            viewBox="0 0 2048 1143"
+            preserveAspectRatio="none"
+            role="group"
+            aria-label="Explore objects in the study room"
+          >
+
+            <title>
+              Study room interactive objects
+            </title>
+
+
+            <!-- BOOKSHELF -->
+
+            <g
+              class="hotspot"
+              id="hotspot-linguistics-bookshelf"
+              data-hotspot-id="linguistics-bookshelf"
+              role="button"
+              tabindex="0"
+              aria-label="Linguistics Bookshelf"
+            >
+
+              <title>Linguistics Bookshelf</title>
+
+              <path
+                class="hotspot-shape"
+                d="M 0,552 L 130,552 L 258,586 L 250,625 L 0,610 Z"
+              ></path>
+
+              <path
+                class="hotspot-shape"
+                d="M 0,611 L 245,632 L 285,663
+                   L 332,691 L 327,740 L 351,790
+                   L 340,851 L 359,902 L 345,963
+                   L 366,1007 L 337,1068 L 363,1120
+                   L 334,1143 L 0,1143 Z"
+              ></path>
+
+            </g>
+
+
+
+            <!-- PRIMARY MONITOR -->
+
+            <g
+              class="hotspot"
+              id="hotspot-lab-primary-monitor"
+              data-hotspot-id="computational-linguistics-lab"
+              role="button"
+              tabindex="0"
+              aria-label="Computational Linguistics Laboratory"
+            >
+
+              <title>
+                Computational Linguistics Laboratory
+              </title>
+
+              <polygon
+                class="hotspot-shape"
+                points="190,218 451,258 451,482 194,541"
+              ></polygon>
+
+            </g>
+
+
+
+            <!-- SECONDARY MONITOR -->
+
+            <g
+              class="hotspot"
+              id="hotspot-lab-secondary-monitor"
+              data-hotspot-id="computational-linguistics-lab"
+              role="button"
+              tabindex="0"
+              aria-label="Computational Linguistics Laboratory secondary monitor"
+            >
+
+              <title>
+                Computational Linguistics Laboratory
+              </title>
+
+              <polygon
+                class="hotspot-shape"
+                points="477,268 690,284 690,446 480,459"
+              ></polygon>
+
+            </g>
+
+
+
+            <!-- NOTEBOOK -->
+
+            <g
+              class="hotspot"
+              id="hotspot-linguistics-notes"
+              data-hotspot-id="linguistics-notes"
+              role="button"
+              tabindex="0"
+              aria-label="Linguistics Notes"
+            >
+
+              <title>Linguistics Notes</title>
+
+              <polygon
+                class="hotspot-shape"
+                points="590,580 704,572 711,621 605,644 579,625"
+              ></polygon>
+
+            </g>
+
+
+
+            <!-- COFFEE CUP -->
+
+            <g
+              class="hotspot"
+              id="hotspot-reading-records"
+              data-hotspot-id="reading-records"
+              role="button"
+              tabindex="0"
+              aria-label="Reading Records"
+            >
+
+              <title>Reading Records</title>
+
+              <polygon
+                class="hotspot-shape"
+                points="276,566 315,550 374,552
+                        431,579 445,620 427,658
+                        383,676 317,666 280,637"
+              ></polygon>
+
+            </g>
+
+
+
+            <!-- PENCIL CASE -->
+
+            <g
+              class="hotspot"
+              id="hotspot-my-vocabulary"
+              data-hotspot-id="my-vocabulary"
+              role="button"
+              tabindex="0"
+              aria-label="My Vocabulary"
+            >
+
+              <title>My Vocabulary</title>
+
+              <polygon
+                class="hotspot-shape"
+                points="468,581 503,562 582,548
+                        630,568 643,592 611,616
+                        526,623 476,606"
+              ></polygon>
+
+            </g>
+
+
+
+            <!-- WORLD LANGUAGES EASTER EGG -->
+
+            <g
+              class="hotspot hotspot-easter-egg"
+              id="hotspot-world-languages"
+              data-hotspot-id="world-languages"
+              role="button"
+              tabindex="0"
+              aria-label="World Languages"
+            >
+
+              <title>World Languages</title>
+
+              <polygon
+                class="hotspot-shape"
+                points="895,811 922,786 963,773
+                        1008,782 1050,809 1081,844
+                        1093,870 1071,891 1035,900
+                        991,883 951,860 919,837"
+              ></polygon>
+
+            </g>
+
+          </svg>
+
+
+
+          <div class="scene-vignette" aria-hidden="true"></div>
+
+
+          <div
+            class="hotspot-tooltip"
+            id="hotspot-tooltip"
+            role="tooltip"
+            aria-hidden="true"
+          ></div>
+
+
+          <div class="scene-corner-label" aria-hidden="true">
+
+            <span class="corner-label-line"></span>
+
+            <span>THE STUDY ROOM</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- IMAGE CAPTION -->
+
+      <div class="scene-caption-row">
+
+        <p class="scene-caption">
+          A quiet place for reading, thinking, and discovering how language works.
+        </p>
+
+        <p class="scene-dimensions">
+          Original artwork · 2048 × 1143
+        </p>
+
+      </div>
+
+
+
+      <!-- SELECTION STATUS -->
+
+      <section
+        class="selection-panel"
+        id="selection-panel"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+
+        <div class="selection-icon" aria-hidden="true">
+
+          <span class="selection-icon-inner">✦</span>
+
+        </div>
+
+
+        <div class="selection-copy">
+
+          <p
+            class="selection-overline"
+            id="selection-overline"
+          >
+            A NOTE FROM THE STUDY ROOM
+          </p>
+
+
+          <h3 id="selection-title">
+            Choose an object to begin
+          </h3>
+
+
+          <p id="selection-description">
+            The books, screens, and notes on the desk each lead to a
+            different corner of linguistics. Select an object in the
+            illustration to explore it.
+          </p>
+
+        </div>
+
+
+        <span
+          class="selection-state"
+          id="selection-state"
+        >
+          Awaiting discovery
+        </span>
+
+      </section>
+
+      <!--
+        Phase 3 dynamically creates the knowledge workspace
+        after this selection panel.
+
+        On wide screens, the study room and knowledge panel
+        are arranged side by side.
+        On mobile, the panel moves below the original image.
+      -->
+
+    </section>
+
+
+
+    <!-- ======================================
+         4. ABOUT
+    ======================================= -->
+
+    <section
+      class="about-section"
+      id="about"
+      aria-labelledby="about-title"
+    >
+
+      <div class="about-rule"></div>
+
+
+      <div>
+
+        <p class="eyebrow">
+          ABOUT THIS SPACE
+        </p>
+
+        <h2 id="about-title">
+          A room for the study of language.
+        </h2>
+
+      </div>
+
+
+      <p class="about-description">
+        LuLinogic is a personal knowledge space for exploring linguistics,
+        philosophy of language, formal methods, and computational approaches
+        to human communication. This study room is designed as an entrance
+        to that growing collection.
+      </p>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- ======================================
+       5. FOOTER
+  ======================================= -->
+
+  <footer class="site-footer">
+
+    <a class="footer-brand" href="./index.html">
+      LuLinogic
+    </a>
+
+    <span>
+      Language · Linguistics and the Structure of Language
+    </span>
+
+    <a href="#language-home" class="back-to-top">
+      Back to top ↑
+    </a>
+
+  </footer>
+
+
+  <!-- Accessibility announcements -->
+
+  <div
+    class="sr-only"
+    id="interaction-announcer"
+    aria-live="polite"
+  ></div>
+
+
+</body>
+</html>

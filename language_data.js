@@ -279,52 +279,52 @@
             },
 
 
-{
-    id: "linguistic_terms",
+            {
+                id: "linguistic_terms",
 
-    title: "语言学名词",
+                title: "语言学名词",
 
-    author: "语言学名词审定委员会",
+                author: "语言学名词审定委员会",
 
-    itemType: "reference-dictionary",
+                itemType: "reference-dictionary",
 
-    publicationInfo:
-        "北京：商务印书馆，2011",
+                publicationInfo:
+                    "北京：商务印书馆，2011",
 
-    publisher: "商务印书馆",
+                publisher: "商务印书馆",
 
-    publicationYear: 2011,
+                publicationYear: 2011,
 
-    category:
-        "Linguistic Terminology",
+                category:
+                    "Linguistic Terminology",
 
-    language: "Chinese",
+                language: "Chinese",
 
-    entryCount: 2939,
+                entryCount: 2939,
 
-    partCount: 13,
+                partCount: 13,
 
-    cover:
-        "./assets/books/linguistic-terms/cover.jpg",
+                cover:
+                    "./assets/books/linguistic-terms/cover.jpg",
 
-    pdfUrl:
-        "./assets/books/linguistic-terms/original/linguistic-terms.pdf",
+                pdfUrl:
+                    "./assets/books/linguistic-terms/original/linguistic-terms.pdf",
 
-    tableOfContents: linguisticTermsTOC,
+                tableOfContents: linguisticTermsTOC,
 
-    keywords: [
-        "语言学名词",
-        "理论语言学",
-        "文字学",
-        "语音学",
-        "语法学",
-        "语义学",
-        "计算语言学",
-        "社会语言学"
-    ],
+                keywords: [
+                    "语言学名词",
+                    "理论语言学",
+                    "文字学",
+                    "语音学",
+                    "语法学",
+                    "语义学",
+                    "计算语言学",
+                    "社会语言学"
+                ],
 
-    pages: []
-}
+                pages: []
+            },
 
 
             {

@@ -19,6 +19,80 @@
 
 
     /* =========================================
+       1. LINGUISTICS TERMS TABLE OF CONTENTS
+    ========================================= */
+
+    const linguisticTermsTOC = [
+
+        {
+            id: "theoretical-linguistics",
+            title: "理论语言学"
+        },
+
+        {
+            id: "writing-systems",
+            title: "文字学"
+        },
+
+        {
+            id: "phonetics",
+            title: "语音学"
+        },
+
+        {
+            id: "grammar",
+            title: "语法学"
+        },
+
+        {
+            id: "semantics-lexicology",
+            title: "语义学、词汇学"
+        },
+
+        {
+            id: "lexicography",
+            title: "辞书学"
+        },
+
+        {
+            id: "dialectology",
+            title: "方言学"
+        },
+
+        {
+            id: "rhetoric",
+            title: "修辞学"
+        },
+
+        {
+            id: "historical-phonology",
+            title: "音韵学"
+        },
+
+        {
+            id: "exegesis",
+            title: "训诂学"
+        },
+
+        {
+            id: "computational-linguistics",
+            title: "计算语言学"
+        },
+
+        {
+            id: "sociolinguistics",
+            title: "社会语言学"
+        },
+
+        {
+            id: "ethnolinguistics",
+            title: "民族语言学"
+        }
+
+    ];
+
+
+    /* =========================================
        1. MAIN DATA OBJECT
     ========================================= */
 

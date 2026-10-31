@@ -1,480 +1,759 @@
-/* 基础重置与字体设置 */
-:root {
-    --bg-color: #fbfbf9;
-    --text-main: #2b2b2b;
-    --text-light: #555555;
-    --accent-color: #7b2c25;
+/* ==========================================================================
+   LuLinogic | Secondary / Anime Aesthetic Style Sheet (style.css)
+   保持原有 DOM 布局结构不变 (aside.profile-sidebar + main.profile-main)
+   新增：二次元玻璃拟态配色、原神元素主题切换、插画横幅组与星轨动效
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cinzel:wght@600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+:root,
+[data-theme="electro"] {
+    --bg-primary: #120e24;
+    --bg-secondary: #1e163b;
+    --bg-gradient: radial-gradient(circle at 15% 15%, rgba(168, 85, 247, 0.28) 0%, transparent 45%),
+                   radial-gradient(circle at 85% 80%, rgba(99, 102, 241, 0.25) 0%, transparent 50%),
+                   linear-gradient(135deg, #0f0b1d 0%, #1a1233 50%, #14182e 100%);
+    --card-bg: rgba(30, 23, 56, 0.72);
+    --card-hover-bg: rgba(42, 31, 78, 0.86);
+    --sidebar-bg: rgba(24, 18, 46, 0.78);
+    --border-color: rgba(192, 132, 252, 0.32);
+    --border-glow: rgba(192, 132, 252, 0.65);
+    --accent-primary: #c084fc;
+    --accent-secondary: #818cf8;
+    --accent-Warm: #f472b6;
+    --text-main: #f5f3ff;
+    --text-secondary: #ddd6fe;
+    --text-muted: #a78bfa;
+    --tag-bg: rgba(168, 85, 247, 0.18);
+    --shadow-glow: 0 12px 32px -8px rgba(139, 92, 246, 0.35);
+    --theme-badge: "⚡ 雷电·稻妻紫 (Electro Violet)";
+}
+
+[data-theme="anemo"] {
+    --bg-primary: #0d211f;
+    --bg-secondary: #132f2c;
+    --bg-gradient: radial-gradient(circle at 15% 20%, rgba(52, 211, 153, 0.24) 0%, transparent 45%),
+                   radial-gradient(circle at 85% 75%, rgba(45, 212, 191, 0.22) 0%, transparent 50%),
+                   linear-gradient(135deg, #091917 0%, #102a28 50%, #112233 100%);
+    --card-bg: rgba(18, 45, 43, 0.72);
+    --card-hover-bg: rgba(24, 60, 57, 0.86);
+    --sidebar-bg: rgba(14, 38, 36, 0.78);
+    --border-color: rgba(110, 231, 183, 0.32);
+    --border-glow: rgba(52, 211, 153, 0.68);
+    --accent-primary: #6ee7b7;
+    --accent-secondary: #38bdf8;
+    --accent-Warm: #fde047;
+    --text-main: #ecfdf5;
+    --text-secondary: #ccfbf1;
+    --text-muted: #5eead4;
+    --tag-bg: rgba(52, 211, 153, 0.18);
+    --shadow-glow: 0 12px 32px -8px rgba(16, 185, 129, 0.32);
+    --theme-badge: "🍃 砂糖·风系翠 (Anemo Mint)";
+}
+
+[data-theme="starry"] {
+    --bg-primary: #f6f4ff;
+    --bg-secondary: #ede9fe;
+    --bg-gradient: radial-gradient(circle at 15% 15%, rgba(167, 139, 250, 0.25) 0%, transparent 45%),
+                   radial-gradient(circle at 85% 80%, rgba(94, 234, 212, 0.28) 0%, transparent 50%),
+                   linear-gradient(135deg, #f8f7ff 0%, #eef2ff 50%, #ecfeff 100%);
+    --card-bg: rgba(255, 255, 255, 0.78);
+    --card-hover-bg: rgba(255, 255, 255, 0.94);
+    --sidebar-bg: rgba(255, 255, 255, 0.82);
+    --border-color: rgba(139, 92, 246, 0.26);
+    --border-glow: rgba(124, 58, 237, 0.55);
+    --accent-primary: #7c3aed;
+    --accent-secondary: #0d9488;
+    --accent-Warm: #ec4899;
+    --text-main: #1e1b4b;
+    --text-secondary: #312e81;
+    --text-muted: #6d28d9;
+    --tag-bg: rgba(139, 92, 246, 0.12);
+    --shadow-glow: 0 12px 32px -8px rgba(124, 58, 237, 0.18);
+    --theme-badge: "✨ 绮良·浅色昼 (Daylight Pastel)";
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    /* 优先使用经典的英文衬线字体 */
-    font-family: "Georgia", "Garamond", "Times New Roman", serif;
-    background-color: var(--bg-color);
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-primary);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
     color: var(--text-main);
-    line-height: 1.8;
-}
-
-/* 核心容器布局 */
-.container {
-    max-width: 800px;
-    margin: 60px auto;
-    padding: 0 30px;
-}
-
-/* 头部排版 */
-header {
-    text-align: center;
-    border-bottom: 2px solid var(--text-main);
-    padding-bottom: 30px;
-    margin-bottom: 50px;
-}
-
-header h1 {
-    font-size: 3.8em;
-    font-weight: normal;
-    letter-spacing: 4px;
-    margin: 0 0 10px 0;
-}
-
-.subtitle {
-    font-size: 1.1em;
-    color: var(--text-light);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-/* 章节标题层级 */
-h2 {
-    font-size: 1.8em;
-    font-weight: normal;
-    position: relative;
-    padding-left: 15px;
-    margin-top: 60px;
-    margin-bottom: 25px;
-    font-style: italic; /* 英文排版中常用斜体增加标题的优雅感 */
-}
-
-h2::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 5px;
-    bottom: 5px;
-    width: 3px;
-    background-color: var(--accent-color);
-}
-
-/* 研究视域网格布局 */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-}
-
-.card {
-    background: #ffffff;
-    border: 1px solid #eaeaea;
-    padding: 20px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.03);
-    transition: transform 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.card h3 {
-    font-size: 1.2em;
-    font-weight: normal;
-    border-bottom: 1px dashed #ccc;
-    padding-bottom: 10px;
-    margin-top: 0;
-    color: var(--accent-color);
-}
-
-.card ul {
-    list-style-type: square; /* 改为方形列表符，更具现代学术感 */
-    padding-left: 20px;
-    color: var(--text-light);
-}
-
-/* 书架列表 */
-.book-list li {
-    margin-bottom: 10px;
-}
-
-/* 页脚 */
-footer {
-    margin-top: 80px;
-    text-align: center;
-    font-size: 0.9em;
-    color: var(--text-light);
-    border-top: 1px solid #eaeaea;
-    padding-top: 20px;
-}
-/* 导航链接样式 */
-.nav-link {
-    color: var(--text-light);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-    color: var(--accent-color);
-}
-
-/* 图标网格布局 (用于子页面) */
-/* ------------------------------------- */
-/* 横向滑动图标容器 (图标排版更新) */
-/* ------------------------------------- */
-.icon-grid {
-    display: flex;
-    gap: 30px;
-    margin-top: 40px;
-    padding: 20px 5px 30px 5px; /* 上下留白，防止卡片悬浮阴影被切掉 */
-    overflow-x: auto;           /* 核心：超出容器宽度时开启横向滚动 */
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory; /* 增加滑动时的自动吸附体验 */
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch; /* 优化触控板和移动端滑动 */
-}
-
-/* 针对横向滚动条的极简美化 */
-.icon-grid::-webkit-scrollbar {
-    height: 6px; /* 滚动条高度 */
-}
-.icon-grid::-webkit-scrollbar-thumb {
-    background: #e0e0e0; /* 极简的浅灰色 */
-    border-radius: 10px;
-}
-.icon-grid::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-/* 单个图标卡片 */
-.icon-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: var(--text-main);
-    width: 160px;
-    flex-shrink: 0; /* 核心：防止图标数量增多时被强行挤压变窄 */
-    scroll-snap-align: start; /* 滑动时卡片左侧自动对齐边缘 */
-    padding: 30px 20px;
-    border: 1px solid #eaeaea;
-    border-radius: 12px;
-    background: #ffffff;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.03);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.icon-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-
-.icon-card img {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 20px;
-    object-fit: contain;
-}
-
-.icon-title {
-    font-size: 1.1em;
-    font-family: "Georgia", "Garamond", serif;
-    font-style: italic;
-    color: var(--accent-color);
-    text-align: center;
-}
-/* =========================================
-   LuLinogic Profile Layout
-   Two-column academic personal homepage
-   ========================================= */
-
-.profile-layout {
-    width: min(1440px, 92%);
-    min-height: 100vh;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 300px minmax(0, 1fr);
-    column-gap: 90px;
-    align-items: start;
-    padding: 65px 0 35px;
-    box-sizing: border-box;
-}
-
-/* ---------- Left Sidebar ---------- */
-
-.profile-sidebar {
-    position: sticky;
-    top: 45px;
-    align-self: start;
-    padding-bottom: 30px;
-}
-
-.profile-name {
-    font-size: 2rem;
-    font-weight: normal;
-    letter-spacing: 1px;
-    margin: 0 0 28px;
-    color: #302a27;
-}
-
-.profile-photo-wrapper {
-    width: 100%;
-    max-width: 280px;
-    margin-bottom: 28px;
-    overflow: hidden;
-    background: #eee9e3;
-}
-
-.profile-photo {
-    display: block;
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    object-position: center;
-}
-
-.profile-description {
-    border-bottom: 1px solid #ded9d4;
-    padding-bottom: 24px;
-    margin-bottom: 20px;
-}
-
-.profile-description h3 {
-    font-size: 1.12rem;
-    font-weight: bold;
-    margin: 0 0 10px;
-    color: #302a27;
-}
-
-.profile-description p {
-    font-size: 0.96rem;
     line-height: 1.7;
-    color: #77716c;
-    margin: 5px 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-.profile-description .profile-motto {
-    margin-top: 15px;
-    font-size: 0.9rem;
-    font-style: italic;
-}
-
-/* ---------- Navigation Links ---------- */
-
-.profile-navigation {
+/* 顶部悬浮二次元氛围控制台 */
+.anime-toolbar {
+    position: sticky;
+    top: 12px;
+    z-index: 40;
+    max-width: 1240px;
+    margin: 12px auto 0;
+    padding: 0 24px;
     display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-top: 18px;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.profile-navigation .nav-link {
+.anime-toolbar-inner {
+    width: 100%;
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: var(--shadow-glow);
+}
+
+.toolbar-brand {
     display: flex;
     align-items: center;
     gap: 10px;
-    width: fit-content;
-    padding: 8px 10px 8px 0;
-
-    color: #854b3d;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-
-    border-bottom: 1px solid transparent;
-    transition: color 0.25s ease,
-                border-color 0.25s ease,
-                padding-left 0.25s ease;
-}
-
-.profile-navigation .nav-indicator {
     font-size: 0.85rem;
-    color: #a16b59;
-    opacity: 0.85;
+    color: var(--text-secondary);
+    font-weight: 600;
 }
 
-.profile-navigation .nav-link:hover {
-    color: #b05b42;
-    border-bottom-color: #b05b42;
-    padding-left: 7px;
+.toolbar-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    box-shadow: 0 0 10px var(--accent-primary);
+    display: inline-block;
 }
 
-.profile-navigation .nav-link:hover .nav-indicator {
-    color: #b05b42;
+.toolbar-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
-/* ---------- Right Main Content ---------- */
+.theme-btn {
+    background: var(--tag-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
 
+.theme-btn:hover,
+.theme-btn.active {
+    background: var(--accent-primary);
+    color: #0f0b1d;
+    border-color: var(--accent-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 背景星轨粒子画布 */
+#starfield-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 核心双栏布局（保持原有 .profile-layout 结构不变） */
+.profile-layout {
+    position: relative;
+    z-index: 1;
+    max-width: 1240px;
+    margin: 20px auto 48px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 330px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+/* 左侧个人资料栏 */
+.profile-sidebar {
+    position: sticky;
+    top: 76px;
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-glow);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.profile-sidebar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 92px;
+    background-image: url("user_uploaded_files/ttl=63d/tool_generated/banner_raiden.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.42;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+    pointer-events: none;
+}
+
+.profile-name {
+    position: relative;
+    font-family: 'Cinzel', 'Inter', serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+    background: linear-gradient(90deg, var(--text-main), var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 二次元法阵头像框 */
+.profile-photo-wrapper {
+    position: relative;
+    width: 156px;
+    height: 156px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    padding: 6px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-Warm));
+    box-shadow: 0 0 28px rgba(192, 132, 252, 0.45);
+}
+
+.profile-photo-wrapper::after {
+    content: "✦ LV.90 · Teyvat Scholar ✦";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    color: #0f0b1d;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--bg-primary);
+    background-color: var(--bg-secondary);
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.profile-photo-wrapper:hover .profile-photo {
+    transform: scale(1.07) rotate(4deg);
+}
+
+.profile-description {
+    margin-top: 16px;
+    margin-bottom: 22px;
+}
+
+.profile-description h3 {
+    font-size: 1.05rem;
+    color: var(--accent-primary);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.profile-description p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.profile-motto {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--tag-bg);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    font-size: 0.83rem !important;
+    color: var(--text-main) !important;
+}
+
+/* 导航栏 RPG 菜单化设计 */
+.profile-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    border-radius: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link:hover {
+    background: var(--card-hover-bg);
+    border-color: var(--border-glow);
+    transform: translateX(5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.nav-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    background: var(--tag-bg);
+    color: var(--accent-primary);
+    font-size: 0.82rem;
+    font-weight: 700;
+    transition: transform 0.25s ease;
+}
+
+.nav-link:hover .nav-indicator {
+    transform: rotate(45deg) scale(1.1);
+    background: var(--accent-primary);
+    color: #0f0b1d;
+}
+
+/* 右侧主体内容区 */
 .profile-main {
-    min-width: 0;
-    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
 }
 
 .content-section {
-    margin-bottom: 65px;
+    position: relative;
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 28px 32px;
+    box-shadow: var(--shadow-glow);
+    overflow: hidden;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.content-section:hover {
+    border-color: var(--border-glow);
 }
 
 .content-section h2 {
-    color: #302a27;
-    font-size: 2rem;
-    font-weight: normal;
-    margin: 0 0 25px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #ded9d4;
-}
-
-.content-section p {
-    color: #45403c;
-    font-size: 1.05rem;
-    line-height: 1.85;
-    margin: 0 0 18px;
-}
-
-/* ---------- Research Areas ---------- */
-
-.research-list {
+    font-family: 'Cinzel', 'Inter', serif;
+    font-size: 1.45rem;
+    margin-bottom: 16px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-main);
+}
+
+.content-section h2::before {
+    content: "✦";
+    color: var(--accent-primary);
+    font-size: 1.2rem;
+}
+
+.content-section h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-color), transparent);
+    margin-left: 12px;
+}
+
+/* About 区域顶部动漫星海图书馆插画横幅 */
+.about-hero-banner {
+    width: 100%;
+    height: 185px;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.about-hero-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.about-hero-banner:hover img {
+    transform: scale(1.04);
+}
+
+.about-hero-caption {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    background: rgba(15, 11, 29, 0.75);
+    backdrop-filter: blur(8px);
+    color: #f5f3ff;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    border: 1px solid rgba(192, 132, 252, 0.4);
+}
+
+.about-section p {
+    color: var(--text-secondary);
+    font-size: 0.98rem;
+}
+
+/* Research Areas 2x2 二次元角色属性卡网格 */
+.research-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 
 .research-item {
-    padding: 23px 0 25px;
-    border-bottom: 1px solid #e5e0dc;
+    position: relative;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 22px;
+    transition: all 0.28s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.research-item:first-child {
-    padding-top: 5px;
+.research-item:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-glow);
+    box-shadow: var(--shadow-glow);
+}
+
+/* 为每个研究卡片配置专属顶部二次元横幅装饰条 */
+.research-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
 }
 
 .research-item h3 {
-    color: #854b3d;
-    font-size: 1.3rem;
-    font-weight: normal;
-    margin: 0 0 12px;
+    font-size: 1.15rem;
+    color: var(--accent-primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .research-item p {
-    color: #77716c;
-    font-size: 0.98rem;
-    margin-bottom: 12px;
-}
-
-.research-item ul {
-    padding-left: 22px;
-    margin: 10px 0 0;
-}
-
-.research-item li {
-    color: #514b46;
-    line-height: 1.9;
-    padding-left: 3px;
-}
-
-/* ---------- Reading Shelf ---------- */
-
-.reading-section {
-    margin-top: 10px;
-}
-
-.reading-list {
-    padding-left: 25px;
-    margin-top: 18px;
-}
-
-.reading-list li {
-    color: #45403c;
-    line-height: 1.9;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
     margin-bottom: 14px;
 }
 
-.reading-list strong {
-    color: #302a27;
+.research-item ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
 }
 
-/* ---------- Footer ---------- */
+.research-item ul li {
+    background: var(--tag-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 4px 11px;
+    border-radius: 999px;
+}
 
+/* Mihoyo 卡片内嵌双横幅插画微缩预览 */
+.mihoyo-mini-banners {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.mihoyo-mini-banners img {
+    width: 100%;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.mihoyo-mini-banners img:hover {
+    transform: scale(1.04);
+    border-color: var(--accent-primary);
+}
+
+/* 新增：二次元插画组展示长廊（位于卡片内，不破坏主布局结构） */
+.anime-gallery-strip {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border-color);
+}
+
+.anime-gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.anime-gallery-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.anime-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.gallery-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    cursor: pointer;
+    aspect-ratio: 16 / 8;
+}
+
+.gallery-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.gallery-card:hover img {
+    transform: scale(1.06);
+}
+
+.gallery-card-label {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 4px 10px;
+    font-size: 0.74rem;
+    background: linear-gradient(to top, rgba(10, 8, 22, 0.9), transparent);
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Reading Shelf 书架列表美化 */
+.reading-section p {
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.reading-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.reading-list li {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--accent-secondary);
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+    transition: transform 0.25s ease;
+}
+
+.reading-list li:hover {
+    transform: translateX(4px);
+    border-color: var(--border-glow);
+}
+
+.reading-list li strong {
+    color: var(--accent-primary);
+    margin-right: 6px;
+}
+
+/* 页脚 */
 .profile-footer {
-    border-top: 1px solid #ded9d4;
-    padding-top: 25px;
-    margin-top: 75px;
     text-align: center;
+    padding: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    font-size: 0.86rem;
+    color: var(--text-muted);
 }
 
-.profile-footer p {
-    color: #77716c;
-    font-size: 0.9rem;
-    margin: 0;
+/* 右下角悬浮绮良良二次元看板娘挂件 */
+.chibi-mascot-widget {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 45;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
 }
 
-/* ---------- Responsive Layout ---------- */
+.chibi-bubble {
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glow);
+    color: var(--text-main);
+    padding: 10px 14px;
+    border-radius: 16px 16px 4px 16px;
+    font-size: 0.8rem;
+    max-width: 220px;
+    box-shadow: var(--shadow-glow);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
 
+.chibi-avatar-btn {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-primary);
+    background: var(--card-bg);
+    padding: 3px;
+    cursor: pointer;
+    box-shadow: var(--shadow-glow);
+    transition: transform 0.25s ease;
+}
+
+.chibi-avatar-btn:hover {
+    transform: translateY(-4px) scale(1.06);
+}
+
+.chibi-avatar-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* 灯箱与子页面预览弹窗 */
+.anime-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 7, 18, 0.78);
+    backdrop-filter: blur(8px);
+    z-index: 60;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.anime-modal-backdrop.open {
+    display: flex;
+}
+
+.anime-modal-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glow);
+    border-radius: 22px;
+    max-width: 720px;
+    width: 100%;
+    padding: 24px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.anime-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.anime-modal-close {
+    background: var(--tag-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+/* 响应式适配 */
 @media (max-width: 900px) {
     .profile-layout {
-        grid-template-columns: 240px minmax(0, 1fr);
-        column-gap: 45px;
-        width: 94%;
+        grid-template-columns: 1fr;
     }
-
-    .profile-name {
-        font-size: 1.7rem;
-    }
-
-    .content-section h2 {
-        font-size: 1.7rem;
-    }
-}
-
-@media (max-width: 650px) {
-    .profile-layout {
-        display: flex;
-        flex-direction: column;
-        width: 90%;
-        padding-top: 35px;
-    }
-
     .profile-sidebar {
         position: static;
-        width: 100%;
     }
-
-    .profile-name {
-        margin-bottom: 20px;
-    }
-
-    .profile-photo-wrapper {
-        max-width: 220px;
-    }
-
-    .profile-navigation {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px 18px;
-        margin-bottom: 45px;
-    }
-
-    .profile-navigation .nav-link {
-        font-size: 0.9rem;
-    }
-
-    .profile-main {
-        width: 100%;
-    }
-
-    .content-section {
-        margin-bottom: 45px;
-    }
-
-    .content-section h2 {
-        font-size: 1.6rem;
-    }
-
-    .profile-footer {
-        margin-top: 45px;
+    .research-list,
+    .anime-gallery-grid {
+        grid-template-columns: 1fr;
     }
 }

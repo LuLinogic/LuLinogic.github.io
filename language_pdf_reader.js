@@ -21,15 +21,39 @@
 // 1. IMPORT PDF.JS
 // =========================================
 
+/* =========================================
+   1. LOCAL PDF.JS CONFIGURATION
+========================================= */
+
 import * as pdfjsLib from
-  "https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/build/pdf.mjs";
+  "./pdfjs/build/pdf.mjs";
 
 
-const PDFJS_BASE =
-  "https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299";
+/*
+ * Resolve paths relative to this JavaScript module.
+ * This also works when the project is deployed
+ * under a GitHub Pages repository subdirectory.
+ */
+
+const PDFJS_ROOT = new URL(
+  "./pdfjs/",
+  import.meta.url
+);
+
+
+const PDFJS_WEB = new URL(
+  "web/",
+  PDFJS_ROOT
+);
+
+
+/* Worker */
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
-  PDFJS_BASE + "/build/pdf.worker.mjs";
+  new URL(
+    "build/pdf.worker.mjs",
+    PDFJS_ROOT
+  ).href;
 
 
 // =========================================
@@ -1182,18 +1206,50 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
     try {
 
-      const loadingTask = pdfjsLib.getDocument({
+const loadingTask = pdfjsLib.getDocument({
 
-        url: book.pdfUrl,
+    /* Original PDF file */
 
-        cMapUrl: PDFJS_BASE + "/cmaps/",
+    url: new URL(
+        book.pdfUrl,
+        document.baseURI
+    ).href,
 
-        cMapPacked: true,
 
-        standardFontDataUrl:
-          PDFJS_BASE + "/standard_fonts/"
+    /* Character maps */
 
-      });
+    cMapUrl: new URL(
+        "cmaps/",
+        PDFJS_WEB
+    ).href,
+
+    cMapPacked: true,
+
+
+    /* Standard fonts */
+
+    standardFontDataUrl: new URL(
+        "standard_fonts/",
+        PDFJS_WEB
+    ).href,
+
+
+    /* WebAssembly resources */
+
+    wasmUrl: new URL(
+        "wasm/",
+        PDFJS_WEB
+    ).href,
+
+
+    /* ICC color profiles */
+
+    iccUrl: new URL(
+        "iccs/",
+        PDFJS_WEB
+    ).href
+
+});
 
 
       state.loadingTask = loadingTask;

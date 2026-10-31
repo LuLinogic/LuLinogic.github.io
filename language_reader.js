@@ -348,39 +348,58 @@
      6. ADD READER BUTTON TO BOOK DETAILS
   ========================================= */
 
+    /* =========================================
+     6. ADD READER BUTTON TO BOOK DETAILS
+  ========================================= */
+
   function enhanceBookDetail(detail) {
 
     if (
       !detail ||
       detail.dataset.readerEnhanced === "true"
     ) {
-
-      return;
-
-    }
-
-
-    // Topic pages do not contain a book cover.
-    if (!detail.querySelector(".knowledge-book-cover")) {
       return;
     }
 
+    /*
+     * Only enhance actual book detail pages.
+     */
+
+    if (
+      !detail.querySelector(".knowledge-book-cover")
+    ) {
+      return;
+    }
 
     const book = findBookFromDetail(detail);
 
-    if (!book) return;
+    if (!book) {
+      return;
+    }
 
+    /*
+     * A companion button should only be displayed
+     * when original companion pages exist.
+     */
+
+    const companion = getCompanion(book.id);
+
+    if (
+      !companion ||
+      !Array.isArray(companion.pages) ||
+      companion.pages.length === 0
+    ) {
+      return;
+    }
 
     const originalNotice = detail.querySelector(
       ".knowledge-phase-notice"
     );
 
-
     const actions = el(
       "div",
       "reader-launch-actions"
     );
-
 
     const openButton = button(
       "Open Reading Companion →",
@@ -392,18 +411,13 @@
       }
     );
 
-
-    openButton.dataset.readerOpen =
-      book.id;
-
+    openButton.dataset.readerOpen = book.id;
 
     const savedPage = getSavedPage(book.id);
-
 
     const resumeLabel = savedPage > 0
       ? "Saved progress available"
       : "Start with the introduction";
-
 
     actions.append(
       openButton,
@@ -413,7 +427,6 @@
         resumeLabel
       )
     );
-
 
     if (originalNotice) {
 
@@ -427,7 +440,6 @@
       detail.appendChild(actions);
 
     }
-
 
     detail.dataset.readerEnhanced = "true";
 

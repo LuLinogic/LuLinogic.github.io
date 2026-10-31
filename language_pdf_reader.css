@@ -1,0 +1,693 @@
+
+/*
+ * LuLinogic — Original PDF Reader
+ * Version: 1.0.0
+ */
+
+
+/* =========================================
+   1. READER ROOT
+========================================= */
+
+.pdf-reader-app {
+
+  --pdf-bg: #101b2b;
+  --pdf-panel: #17263a;
+  --pdf-panel-light: #20334b;
+  --pdf-border: rgba(226, 232, 240, 0.13);
+  --pdf-text: #edf2f7;
+  --pdf-muted: #aab8c9;
+  --pdf-accent: #c6a978;
+
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+
+  min-width: 0;
+
+  min-height: 720px;
+
+  overflow: hidden;
+
+  color: var(--pdf-text);
+
+  background: var(--pdf-bg);
+
+  border: 1px solid var(--pdf-border);
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.17);
+
+}
+
+
+/* =========================================
+   2. HEADER
+========================================= */
+
+.pdf-reader-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 22px 26px;
+
+  border-bottom: 1px solid var(--pdf-border);
+
+}
+
+
+.pdf-reader-identity {
+
+  display: flex;
+
+  align-items: center;
+
+  min-width: 0;
+
+}
+
+
+.pdf-reader-identity-copy {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  min-width: 0;
+
+}
+
+
+.pdf-reader-kicker {
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.19em;
+
+  color: var(--pdf-accent);
+
+}
+
+
+.pdf-reader-book-title {
+
+  font-size: 18px;
+
+  line-height: 1.5;
+
+  font-weight: 650;
+
+  overflow-wrap: anywhere;
+
+}
+
+
+.pdf-reader-book-author {
+
+  font-size: 12px;
+
+  color: var(--pdf-muted);
+
+}
+
+
+.pdf-reader-back-button {
+
+  flex-shrink: 0;
+
+  padding: 10px 14px;
+
+  color: var(--pdf-text);
+
+  background: var(--pdf-panel-light);
+
+  border: 1px solid var(--pdf-border);
+
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+
+}
+
+
+.pdf-reader-back-button:hover {
+
+  background: #2b405b;
+
+  border-color: rgba(198, 169, 120, 0.55);
+
+}
+
+
+/* =========================================
+   3. TOOLBAR
+========================================= */
+
+.pdf-reader-toolbar {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  flex-wrap: wrap;
+
+  gap: 14px;
+
+  padding: 14px 22px;
+
+  background: var(--pdf-panel);
+
+  border-bottom: 1px solid var(--pdf-border);
+
+}
+
+
+.pdf-reader-page-controls,
+.pdf-reader-zoom-controls {
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+}
+
+
+.pdf-reader-control-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 36px;
+
+  height: 36px;
+
+  padding: 0 11px;
+
+  color: var(--pdf-text);
+
+  background: var(--pdf-panel-light);
+
+  border: 1px solid var(--pdf-border);
+
+  border-radius: 6px;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+
+}
+
+
+.pdf-reader-control-button:hover:not(:disabled) {
+
+  background: #314966;
+
+}
+
+
+.pdf-reader-control-button:disabled {
+
+  opacity: 0.35;
+
+  cursor: not-allowed;
+
+}
+
+
+.pdf-reader-page-input {
+
+  width: 58px;
+
+  height: 36px;
+
+  padding: 0 5px;
+
+  color: var(--pdf-text);
+
+  text-align: center;
+
+  background: #0d1725;
+
+  border: 1px solid var(--pdf-border);
+
+  border-radius: 6px;
+
+  outline: none;
+
+}
+
+
+.pdf-reader-page-input:focus {
+
+  border-color: var(--pdf-accent);
+
+}
+
+
+.pdf-reader-page-count {
+
+  min-width: 50px;
+
+  font-size: 12px;
+
+  color: var(--pdf-muted);
+
+}
+
+
+.pdf-reader-go-button,
+.pdf-reader-fit-button {
+
+  color: var(--pdf-accent);
+
+}
+
+
+.pdf-reader-zoom-label {
+
+  min-width: 48px;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  font-variant-numeric: tabular-nums;
+
+  color: var(--pdf-muted);
+
+}
+
+
+/* =========================================
+   4. STATUS
+========================================= */
+
+.pdf-reader-status {
+
+  min-height: 34px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 7px 24px;
+
+  font-size: 11px;
+
+  letter-spacing: 0.025em;
+
+  color: var(--pdf-muted);
+
+  background: #142238;
+
+  border-bottom: 1px solid var(--pdf-border);
+
+}
+
+
+/* =========================================
+   5. VIEWPORT
+========================================= */
+
+.pdf-reader-viewport {
+
+  position: relative;
+
+  flex: 1;
+
+  min-width: 0;
+
+  min-height: 560px;
+
+  max-height: 78vh;
+
+  overflow: auto;
+
+  padding: 30px 24px 42px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      #34465a 0%,
+      #253548 42%,
+      #1b293b 100%
+    );
+
+}
+
+
+.pdf-reader-spread {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: center;
+
+  gap: 22px;
+
+  width: max-content;
+
+  min-width: 100%;
+
+  margin: 0 auto;
+
+}
+
+
+.pdf-reader-spread.is-single-page {
+
+  justify-content: center;
+
+}
+
+
+.pdf-reader-spread.is-double-page {
+
+  justify-content: center;
+
+}
+
+
+.pdf-reader-sheet {
+
+  flex: 0 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  width: fit-content;
+
+  max-width: none;
+
+  padding: 0;
+
+  background: #fff;
+
+  border: 1px solid rgba(30, 41, 59, 0.17);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.34),
+    0 2px 7px rgba(0, 0, 0, 0.18);
+
+}
+
+
+.pdf-reader-sheet-label {
+
+  width: 100%;
+
+  padding: 7px 10px;
+
+  color: #64748b;
+
+  background: #f8fafc;
+
+  border-bottom: 1px solid #e2e8f0;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  text-align: center;
+
+}
+
+
+.pdf-reader-canvas {
+
+  display: block;
+
+  max-width: none;
+
+  height: auto;
+
+  background: white;
+
+}
+
+
+/* =========================================
+   6. ERROR STATE
+========================================= */
+
+.pdf-reader-error {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 14px;
+
+  max-width: 560px;
+
+  margin: 70px auto;
+
+  padding: 36px;
+
+  text-align: center;
+
+  color: #edf2f7;
+
+  background: rgba(16, 27, 43, 0.92);
+
+  border: 1px solid var(--pdf-border);
+
+  border-radius: 10px;
+
+}
+
+
+.pdf-reader-error strong {
+
+  font-size: 18px;
+
+}
+
+
+.pdf-reader-error p {
+
+  color: var(--pdf-muted);
+
+  font-size: 13px;
+
+  line-height: 1.8;
+
+}
+
+
+.pdf-reader-error a {
+
+  display: inline-block;
+
+  padding: 10px 16px;
+
+  color: #152237;
+
+  background: var(--pdf-accent);
+
+  border-radius: 6px;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+}
+
+
+/* =========================================
+   7. FOOTER
+========================================= */
+
+.pdf-reader-footer {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  padding: 14px 24px;
+
+  color: var(--pdf-muted);
+
+  font-size: 10px;
+
+  letter-spacing: 0.04em;
+
+  border-top: 1px solid var(--pdf-border);
+
+}
+
+
+/* =========================================
+   8. KNOWLEDGE WORKSPACE INTEGRATION
+========================================= */
+
+#knowledge-workspace-content.is-pdf-reading {
+
+  min-width: 0;
+
+}
+
+
+#study-exploration-layout.is-pdf-reader-mode
+.study-scene-column {
+
+  align-self: flex-start;
+
+}
+
+
+/* =========================================
+   9. ACCESSIBILITY
+========================================= */
+
+.pdf-reader-app button:focus-visible,
+.pdf-reader-app input:focus-visible,
+.pdf-reader-app a:focus-visible {
+
+  outline: 2px solid var(--pdf-accent);
+
+  outline-offset: 3px;
+
+}
+
+
+/* =========================================
+   10. RESPONSIVE LAYOUT
+========================================= */
+
+@media (max-width: 900px) {
+
+  .pdf-reader-app {
+
+    min-height: 620px;
+
+  }
+
+
+  .pdf-reader-viewport {
+
+    min-height: 480px;
+
+    max-height: 72vh;
+
+    padding: 22px 14px;
+
+  }
+
+
+  .pdf-reader-header {
+
+    padding: 18px;
+
+  }
+
+
+  .pdf-reader-toolbar {
+
+    padding: 12px 14px;
+
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .pdf-reader-header {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+  }
+
+
+  .pdf-reader-back-button {
+
+    width: 100%;
+
+  }
+
+
+  .pdf-reader-toolbar {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+  }
+
+
+  .pdf-reader-page-controls,
+  .pdf-reader-zoom-controls {
+
+    width: 100%;
+
+  }
+
+
+  .pdf-reader-viewport {
+
+    min-height: 420px;
+
+    padding: 16px 8px;
+
+  }
+
+
+  .pdf-reader-footer {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+  }
+
+}

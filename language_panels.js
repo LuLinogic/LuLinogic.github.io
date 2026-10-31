@@ -739,6 +739,75 @@
     return labels[type] || "BIBLIOGRAPHIC RECORD";
 
   }
+    /* =========================================
+     6.1 ORIGINAL PDF ACCESS
+  ========================================= */
+
+  function makeOriginalPdfSection(book) {
+
+    if (!book || !book.pdfUrl) {
+      return null;
+    }
+
+    const section = make(
+      "section",
+      "knowledge-detail-section knowledge-original-pdf"
+    );
+
+    section.append(
+      make(
+        "p",
+        "knowledge-kicker",
+        "ORIGINAL TEXT"
+      ),
+
+      make(
+        "h4",
+        "knowledge-detail-section-title",
+        "Read the Original Book"
+      ),
+
+      make(
+        "p",
+        "knowledge-detail-description",
+        "Read the original edition directly, with page navigation and adjustable magnification."
+      )
+    );
+
+
+    const link = document.createElement("a");
+
+    link.className =
+      "knowledge-card-action knowledge-resource-link knowledge-pdf-launch-button";
+
+    /*
+     * The direct URL is retained as a fallback.
+     * When the PDF reader module is available,
+     * event delegation opens the embedded reader instead.
+     */
+
+    link.href = book.pdfUrl;
+
+    link.target = "_blank";
+
+    link.rel = "noopener noreferrer";
+
+    link.textContent = "Open Original PDF →";
+
+    link.dataset.pdfReaderOpen = book.id;
+
+
+    link.setAttribute(
+      "aria-label",
+      "Read the original PDF of " + book.title
+    );
+
+
+    section.appendChild(link);
+
+    return section;
+
+  }
 
 
   /* =========================================
@@ -951,12 +1020,37 @@
     );
 
 
+    /* =====================================
+       ORIGINAL PDF READER ENTRY
+    ===================================== */
+
+    const originalPdfSection =
+      makeOriginalPdfSection(book);
+
+
+    /* =====================================
+       ASSEMBLE BOOK DETAIL
+    ===================================== */
+
     detail.append(
       back,
       hero,
       metadata,
       keywords,
-      guide,
+      guide
+    );
+
+
+    if (originalPdfSection) {
+
+      detail.appendChild(
+        originalPdfSection
+      );
+
+    }
+
+
+    detail.append(
       note,
       readerNotice
     );
@@ -984,6 +1078,66 @@
     if (grid) {
       filterCards(grid, state.query);
     }
+
+  }
+    /* =========================================
+     7.1 ORIGINAL PDF ACCESS
+  ========================================= */
+
+  function makeOriginalPdfSection(book) {
+
+    if (!book || !book.pdfUrl) {
+      return null;
+    }
+
+    const section = make(
+      "section",
+      "knowledge-detail-section knowledge-original-pdf"
+    );
+
+    section.append(
+      make(
+        "p",
+        "knowledge-kicker",
+        "ORIGINAL TEXT"
+      ),
+
+      make(
+        "h4",
+        "knowledge-detail-section-title",
+        "Read the Original Book"
+      ),
+
+      make(
+        "p",
+        "knowledge-detail-description",
+        "Open the original PDF edition and read the source material directly."
+      )
+    );
+
+
+    const link = document.createElement("a");
+
+    link.className =
+      "knowledge-card-action knowledge-resource-link";
+
+    link.href = book.pdfUrl;
+
+    link.target = "_blank";
+
+    link.rel = "noopener noreferrer";
+
+    link.textContent = "Open Original PDF ↗";
+
+    link.setAttribute(
+      "aria-label",
+      "Open the original PDF of " + book.title
+    );
+
+
+    section.appendChild(link);
+
+    return section;
 
   }
 
@@ -1651,20 +1805,40 @@
     );
 
 
+    /* Original PDF access */
+
+    const originalPdfSection =
+      makeOriginalPdfSection(book);
+
+
+    /* Assemble book detail page */
+
     detail.append(
       back,
-      header,
+      hero,
       metadata,
-      resourcesHeading,
-      resourceGrid
+      keywords,
+      guide
+    );
+
+
+    if (originalPdfSection) {
+
+      detail.appendChild(
+        originalPdfSection
+      );
+
+    }
+
+
+    detail.append(
+      note,
+      readerNotice
     );
 
 
     showDetail(content, detail);
-
   }
-
-
   /* =========================================
      14. LANGUAGE RESOURCE DETAIL
   ========================================= */
@@ -1826,9 +2000,7 @@
 
 
     showDetail(content, detail);
-
   }
-
 
   /* =========================================
      15. READING RECORDS / VOCABULARY

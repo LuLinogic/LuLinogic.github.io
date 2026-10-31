@@ -1,107 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Tree of Analytic Philosophy | LuLinogic</title>
-    
-    <!-- 引入网站现有的全局基础样式 -->
-    <link rel="stylesheet" href="style.css">
-    <!-- 引入知识树专属的独立植物美学样式 -->
-    <link rel="stylesheet" href="analytic_philosophy.css">
-    <!-- 引入 D3.js 核心库 (负责局部树状布局防重叠计算) -->
-    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>分析哲学 · Analytic Philosophy</title>
+<meta name="description" content="一棵可以展开的分析哲学知识树：八条主枝、三十余个子领域、一百六十个词条，点击即可读到斯坦福哲学百科（SEP）的对应条目。">
+<meta property="og:title" content="分析哲学知识树 · Analytic Philosophy">
+<meta property="og:description" content="八条主枝、三十余个子领域、一百六十个词条，挂在树上的一棵分析哲学地图。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F2E8D5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 30V12' stroke='%236B4F32' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M16 16C16 8 10 5 4 6c1 7 6 10 12 10z' fill='%237C9A6D'/%3E%3Cpath d='M16 12c0-6 5-8 11-7-1 6-5 9-11 7z' fill='%238FA57A'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="./analytic_philosophy.css">
 </head>
-<body>
-    <div class="tree-page-layout">
-        
-        <!-- 顶部轻量导航 -->
-        <nav class="tree-nav">
-            <a href="index.html" class="nav-link">← Back to Home</a>
-            <a href="logic.html" class="nav-link">Logic</a>
-        </nav>
+<body class="ap-body">
 
-        <!-- 核心工作区 -->
-        <main class="tree-workspace">
-            
-            <!-- 路径与视角工具栏 -->
-            <div class="tree-toolbar">
-                <div class="breadcrumb">
-                    <span id="current-path">Path: The Tree of Analytic Philosophy</span>
-                </div>
-                <div class="canvas-controls">
-                    <button id="btn-zoom-in" title="Zoom In">+</button>
-                    <button id="btn-zoom-out" title="Zoom Out">-</button>
-                    <button id="btn-reset-view">Reset View</button>
-                    <button id="btn-collapse-all">Collapse All</button>
-                </div>
-            </div>
+<a class="ap-back" href="./index.html">← 返回首页</a>
 
-            <!-- 画布容器：承载具有生命形态的 SVG 树木 -->
-            <div id="tree-canvas-container" class="canvas-container">
-                <svg id="philosophy-tree-svg" width="100%" height="100%"></svg>
-            </div>
+<header class="ap-head">
+  <h1 class="ap-title">分析哲学 · 知识树</h1>
+  <p class="ap-sub">Analytic Philosophy — 从分支到词条</p>
+</header>
 
-            <!-- 独立悬浮搜索控件（支持全库穿透检索与外部学术引擎） -->
-            <div class="floating-search-panel">
-                <div class="search-input-wrapper">
-                    <input type="text" id="tree-search-input" placeholder="Search tree or philosophers..." autocomplete="off">
-                    <button id="btn-clear-search" class="clear-btn hidden" title="Clear search">×</button>
-                </div>
-                <div id="search-results-panel" class="search-results hidden">
-                    <ul id="local-results-list"></ul>
-                    <div id="external-search-links" class="external-links hidden">
-                        <span class="external-label">External:</span>
-                        <a id="link-sep" href="#" target="_blank">SEP</a> | 
-                        <a id="link-iep" href="#" target="_blank">IEP</a> | 
-                        <a id="link-scholar" href="#" target="_blank">Scholar</a> | 
-                        <a id="link-wiki" href="#" target="_blank">Wiki</a>
-                    </div>
-                </div>
-            </div>
+<div class="ap-tools">
+  <div class="ap-viewtoggle" role="group" aria-label="视图切换">
+    <button type="button" id="apBtnTree" class="is-on" aria-pressed="true">树</button>
+    <button type="button" id="apBtnNet" aria-pressed="false">网</button>
+  </div>
+  <div class="ap-legend is-collapsed" id="apLegend">
+    <button type="button" class="ap-legend-btn" id="apLegendBtn" aria-expanded="false">图例</button>
+    <div class="ap-legend-items" id="apLegendItems"></div>
+  </div>
+  <button type="button" class="ap-reset" id="apReset" title="复位视图">复位</button>
+</div>
 
-        </main>
+<div class="ap-loaderr" id="apLoadErr">
+  数据文件 analytic_philosophy_data.js 没有加载成功，请检查它与本页是否在同一目录、文件名是否完全一致。
+</div>
 
-        <!-- 底部紧凑题铭栏 -->
-        <div class="tree-bottom-title">
-            <h1>The Tree of Analytic Philosophy</h1>
-            <p class="subtitle">A Living Map of Philosophical Ideas, Concepts and Arguments.</p>
-        </div>
+<main class="ap-stage">
+  <svg id="apSvg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMax meet" role="img"
+       aria-label="分析哲学知识树：八条主枝分别通向语言哲学、逻辑与数学哲学、认识论、分析哲学史、心灵哲学、形而上学、科学哲学与行动哲学">
+    <defs>
+      <linearGradient id="apTrunkGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#5C4330"/>
+        <stop offset="0.35" stop-color="#7A5A3A"/>
+        <stop offset="1" stop-color="#4E392A"/>
+      </linearGradient>
+    </defs>
 
-        <!-- 右侧学术详情抽屉面板 -->
-        <aside id="node-details-panel" class="details-panel hidden">
-            <button id="btn-close-panel" class="close-btn" title="Close Panel">×</button>
-            <div class="panel-inner">
-                <div class="node-header">
-                    <span id="detail-type" class="node-badge">Concept</span>
-                    <h2 id="detail-title-en">Node Name</h2>
-                    <h3 id="detail-title-zh">节点中文名</h3>
-                </div>
-                <div class="node-body">
-                    <div class="info-section">
-                        <h4>Overview / 学术概述</h4>
-                        <p id="detail-description">Description will appear here.</p>
-                    </div>
-                    <div id="section-philosophers" class="info-section hidden">
-                        <h4>Key Philosophers / 相关哲学家</h4>
-                        <ul id="detail-philosophers"></ul>
-                    </div>
-                    <div id="section-relations" class="info-section hidden">
-                        <h4>Cross-References / 跨学科关联</h4>
-                        <ul id="detail-relations" class="relations-list"></ul>
-                    </div>
-                    <div id="section-resources" class="info-section hidden">
-                        <h4>Academic Resources / 学术文献链接</h4>
-                        <ul id="detail-resources" class="resources-list"></ul>
-                    </div>
-                </div>
-            </div>
-        </aside>
+    <rect id="apBg" x="0" y="0" width="1600" height="1000" fill="transparent"/>
 
-    </div>
+    <g id="apRoot">
+      <g id="apWorld">
 
-    <!-- 依次引入知识数据库与植物学渲染交互引擎 -->
-    <script src="analytic_philosophy_data.js"></script>
-    <script src="analytic_philosophy.js"></script>
+        <g id="apTree">
+          <g id="apArcs"></g>
+          <g id="apCanopy"></g>
+          <g id="apGround"></g>
+          <g id="apRoots"></g>
+          <g id="apTrunk"></g>
+          <g id="apBranches"></g>
+          <g id="apTwigs"></g>
+          <g id="apTags"></g>
+          <g id="apLeaves"></g>
+
+        </g>
+
+        <g id="apGraph" style="display:none">
+          <g id="apGraphEdges"></g>
+          <g id="apGraphNodes"></g>
+        </g>
+
+      </g>
+
+      <!-- 搜索木牌放在聚焦变换之外：放大看某一枝时，它仍停在树干底部可用 -->
+      <g id="apSearchPlaque">
+        <rect x="590" y="820" width="420" height="50" rx="4" fill="#FBF3DF" stroke="#B79A72" stroke-width="1.6"/>
+        <rect x="593" y="823" width="414" height="44" rx="3" fill="none" stroke="#D8C4A4" stroke-width="1"/>
+        <circle cx="606" cy="831" r="2" fill="#B79A72"/>
+        <circle cx="994" cy="831" r="2" fill="#B79A72"/>
+        <circle cx="606" cy="859" r="2" fill="#B79A72"/>
+        <circle cx="994" cy="859" r="2" fill="#B79A72"/>
+        <g transform="translate(612,833)" fill="none" stroke="#8A6B45" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="7" cy="7" r="5.5"/>
+          <path d="M11 11l5 5"/>
+        </g>
+        <foreignObject x="634" y="826" width="366" height="38">
+          <input xmlns="http://www.w3.org/1999/xhtml" id="apInput" class="ap-input" type="text"
+                 autocomplete="off" spellcheck="false"
+                 placeholder="搜索：概念 / 哲学家 / 英文 / 拼音"
+                 aria-label="搜索分析哲学词条"/>
+        </foreignObject>
+      </g>
+    </g>
+  </svg>
+</main>
+
+<div class="ap-results" id="apResults" role="listbox" aria-label="搜索结果"></div>
+
+<div class="ap-hint" id="apHint">SEP 是英文百科（斯坦福哲学百科），中文词会先经维基定位英文条目</div>
+
+<aside class="ap-drawer" id="apDrawer" aria-label="词条详情">
+  <button type="button" class="ap-close" id="apClose" aria-label="关闭">×</button>
+  <div class="ap-chip-type" id="apType"></div>
+  <h2 class="ap-zh" id="apZh"></h2>
+  <p class="ap-en" id="apEn"></p>
+  <p class="ap-gloss" id="apGloss"></p>
+  <div class="ap-actions">
+    <a class="ap-btn ap-btn-main" id="apSep" href="#" target="_blank" rel="noopener"></a>
+    <a class="ap-btn ap-btn-sub" id="apWiki" href="#" target="_blank" rel="noopener">维基百科</a>
+    <a class="ap-sepalt" id="apSepAlt" href="#" target="_blank" rel="noopener"></a>
+  </div>
+  <div class="ap-crumb" id="apCrumb"></div>
+  <div class="ap-rel-wrap">
+    <div class="ap-rel-title">相关词条</div>
+    <div class="ap-related" id="apRelated"></div>
+  </div>
+  <div class="ap-foot">
+    <button type="button" class="ap-star" id="apStar" aria-pressed="false" aria-label="收藏这条">★</button>
+    <button type="button" class="ap-cite" id="apCite">复制引用</button>
+  </div>
+  <div class="ap-src" id="apSrc"></div>
+</aside>
+
+<section class="ap-list" id="apList" aria-label="移动端列表"></section>
+
+<footer class="ap-pagefoot">
+  <span>链接指向 Stanford Encyclopedia of Philosophy（斯坦福哲学百科）；中文名称参考维基百科。</span>
+  <span class="ap-pagefoot-c">160 词条 · 8 分支 · 32 子领域</span>
+</footer>
+
+<script src="./analytic_philosophy_data.js"></script>
+<script src="./analytic_philosophy.js"></script>
+
 </body>
 </html>

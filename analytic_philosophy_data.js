@@ -1,452 +1,303 @@
-// ==========================================================================
-// The Tree of Analytic Philosophy - Core Academic Knowledge Database
-// ==========================================================================
+/* 分析哲学知识树 —— 数据
+ * 8 条主枝 / 32 个子簇 / 160 个词条
+ * sep.verified=false 表示 slug 不确定，链接走 SEP 站内检索，按钮文案为「在 SEP 检索」
+ */
+window.PHIL_DATA = (function () {
+  var E = "https://plato.stanford.edu/entries/";
+  var Q = "https://plato.stanford.edu/search/searcher.py?query=";
 
-const philosophyTreeData = {
-    id: "trunk_base",
-    title_en: "Analytic Philosophy Root System",
-    title_zh: "分析哲学根基与主干",
-    nodeType: "Trunk",
-    description: "The structural spine and historical foundation of analytic philosophy.",
-    descriptionZh: "分析哲学的历史地基与方法论脊椎。",
-    links: {},
-    children: [
-        // ==================================================================
-        // 第一层：Roots (11 大历史思想源流，将向下生长至地下)
-        // ==================================================================
-        {
-            id: "root_ancient_greek", title_en: "Ancient Greek Philosophy", titleZh: "古希腊哲学", nodeType: "Root",
-            description: "Foundational ontology, epistemology, and dialectic of Western thought.",
-            philosophers: ["Plato", "Aristotle", "Socrates"],
-            sepUrl: "https://plato.stanford.sdu/entries/ancient-greek-philosophy/",
-            links: { sep: "https://plato.stanford.edu/entries/ancient-greek-philosophy/" }
-        },
-        {
-            id: "root_plato", title_en: "Plato: Theory of Forms", titleZh: "柏拉图：相论与灵魂", nodeType: "Root",
-            description: "The metaphysics of abstract entities and tripartite soul.",
-            philosophers: ["Plato"],
-            links: { sep: "https://plato.stanford.edu/entries/plato/" }
-        },
-        {
-            id: "root_aristotle", title_en: "Aristotle: Organon & Metaphysics", titleZh: "亚里士多德：工具论与形而上学", nodeType: "Root",
-            description: "Substance, categories, and early syllogistic logic.",
-            philosophers: ["Aristotle"],
-            links: { sep: "https://plato.stanford.edu/entries/aristotle/" }
-        },
-        {
-            id: "root_rationalism", title_en: "Rationalism", titleZh: "近代唯理论", nodeType: "Root",
-            description: "Reason as the primary source of knowledge independent of sensory experience.",
-            philosophers: ["René Descartes", "Baruch Spinoza", "Gottfried Wilhelm Leibniz"],
-            links: { sep: "https://plato.stanford.edu/entries/rationalism-empiricism/" }
-        },
-        {
-            id: "root_empiricism", title_en: "Empiricism", titleZh: "近代经验论", nodeType: "Root",
-            description: "Sense experience as the ultimate source of all concepts and knowledge.",
-            philosophers: ["John Locke", "George Berkeley", "David Hume"],
-            links: { sep: "https://plato.stanford.edu/entries/rationalism-empiricism/" }
-        },
-        {
-            id: "root_kantian", title_en: "Kantian Philosophy", titleZh: "康德哲学", nodeType: "Root",
-            description: "Synthetic a priori judgments and transcendental idealism.",
-            philosophers: ["Immanuel Kant"],
-            links: { sep: "https://plato.stanford.edu/entries/kant/" }
-        },
-        {
-            id: "root_formal_logic", title_en: "Nineteenth-Century Logic", titleZh: "19世纪形式逻辑变革", nodeType: "Root",
-            description: "Boole, De Morgan, and Peirce's algebraic logic precursors.",
-            philosophers: ["George Boole", "Charles Sanders Peirce"],
-            links: { sep: "https://plato.stanford.edu/entries/classic-logic/" }
-        },
-        {
-            id: "root_math_foundations", title_en: "Foundations of Mathematics", titleZh: "数学基础危机", nodeType: "Root",
-            description: "Cantor set theory and Hilbert's program.",
-            philosophers: ["Georg Cantor", "David Hilbert", "Gottlob Frege"],
-            links: { sep: "https://plato.stanford.edu/entries/mathimmert/" }
-        },
+  function K(id, zh, en, type, tier, gloss, slug, related, py) {
+    var sep = slug
+      ? { title: en, slug: slug, url: E + slug + "/", verified: true }
+      : { title: en, slug: null, url: Q + encodeURIComponent(en), verified: false };
+    return {
+      id: id, zh: zh, en: en, type: type, tier: tier, gloss: gloss,
+      sep: sep, wiki: null, related: related ? related.split("|") : [], py: py || ""
+    };
+  }
+  function C(id, zh, en, kw) { return { id: id, zh: zh, en: en, keywords: kw }; }
+  function B(id, zh, en, side, order, color, intro, cl) {
+    return { id: id, zh: zh, en: en, side: side, order: order, color: color, intro: intro, clusters: cl };
+  }
+  function L(from, to, label) { return { from: from, to: to, label: label }; }
 
-        // ==================================================================
-        // 第二层：Trunk (9 大历史演进与方法论阶段，自下而上沿树干主轴排列)
-        // ==================================================================
-        {
-            id: "trunk_origins", title_en: "Origins of Analytic Philosophy", titleZh: "分析哲学的起源", nodeType: "Trunk",
-            description: "The anti-idealist revolt led by Moore and Russell in Cambridge.",
-            philosophers: ["G. E. Moore", "Bertrand Russell"],
-            links: { sep: "https://plato.stanford.edu/entries/analytic-philosophy/" }
-        },
-        {
-            id: "trunk_frege", title_en: "Frege & Modern Logic", titleZh: "弗雷格与现代逻辑奠基", nodeType: "Trunk",
-            description: "Invention of predicate calculus, distinction of sense and reference.",
-            philosophers: ["Gottlob Frege"],
-            links: { sep: "https://plato.stanford.edu/entries/frege/" }
-        },
-        {
-            id: "trunk_russell", title_en: "Russell's Logical Atomism", titleZh: "罗素的逻辑原子主义", nodeType: "Trunk",
-            description: "Theory of descriptions and isomorphism between language and reality.",
-            philosophers: ["Bertrand Russell"],
-            links: { sep: "https://plato.stanford.edu/entries/russell/" }
-        },
-        {
-            id: "trunk_logical_positivism", title_en: "Logical Positivism", titleZh: "逻辑实证主义与维也纳学派", nodeType: "Trunk",
-            description: "Verificationism, elimination of metaphysics, and unity of science.",
-            philosophers: ["Rudolf Carnap", "Moritz Schlick", "A. J. Ayer"],
-            links: { sep: "https://plato.stanford.edu/entries/logical-empiricism/" }
-        },
-        {
-            id: "trunk_ordinary_language", title_en: "Ordinary Language Philosophy", titleZh: "日常语言学派", nodeType: "Trunk",
-            description: "Later Wittgenstein, Ryle, and Austin on therapy of philosophical confusions.",
-            philosophers: ["Ludwig Wittgenstein", "Gilbert Ryle", "J. L. Austin"],
-            links: { sep: "https://plato.stanford.edu/entries/wittgenstein/" }
-        },
-        {
-            id: "trunk_post_war", title_en: "Post-War Analytic Transition", titleZh: "战后分析哲学转型", nodeType: "Trunk",
-            description: "Quine's attack on dogma, Davidson's truth-conditional semantics.",
-            philosophers: ["W. V. O. Quine", "Donald Davidson", "Wilfrid Sellars"],
-            links: { sep: "https://plato.stanford.edu/entries/quine/" }
-        },
-        {
-            id: "trunk_modal_revival", title_en: "The Modal Revival", titleZh: "模态复兴与克里普克革命", nodeType: "Trunk",
-            description: "Kripkean semantics, rigid designators, and a posteriori necessities.",
-            philosophers: ["Saul Kripke", "Hilary Putnam", "David Lewis"],
-            links: { sep: "https://plato.stanford.edu/entries/kripke/" }
-        },
+  var lang = B("lang", "语言哲学", "Philosophy of Language", "left", 1, "#7C9A6D",
+    "语言如何承载意义、指称与世界的关系", [
+    C("lang.meaning", "意义与指称", "Meaning and Reference", [
+      K("meaning", "意义理论", "Theories of Meaning", "概念", 1, "解释表达式凭什么具有意义", "meaning", "reference|semantics", "yyll"),
+      K("reference", "指称", "Reference", "概念", 1, "词语与它所指对象之间的关系", "reference", "meaning|names", "cz"),
+      K("names", "专名", "Names", "概念", 1, "专名如何锁定对象、是否携带描述", "names", "reference|descriptions", "zm"),
+      K("descriptions", "摹状词", "Descriptions", "概念", 1, "限定摹状词的语义与指称机制", "descriptions", "names|logical-form", "mzc"),
+      K("rigid-designators", "刚性指示词", "Rigid Designators", "概念", 2, "在所有可能世界都指同一对象的词", "rigid-designators", "names|possible-worlds", "gxzsc")
+    ]),
+    C("lang.pragmatics", "语义与语用", "Semantics and Pragmatics", [
+      K("speech-acts", "言语行为", "Speech Acts", "概念", 1, "说话同时也在做事的语言行动", "speech-acts", "assertion|pragmatics", "yyxw"),
+      K("pragmatics", "语用学", "Pragmatics", "概念", 1, "语境如何补足字面意义", "pragmatics", "speech-acts|implicature", "yyx"),
+      K("assertion", "断言", "Assertion", "概念", 1, "有真假可言、需承担辩护的言语行为", "assertion", "speech-acts|truth", "dy"),
+      K("implicature", "会话含意", "Conversational Implicature", "概念", 2, "说出来的话暗示了未说出的内容", null, "pragmatics|assertion", "hhhy"),
+      K("presupposition", "预设", "Presupposition", "概念", 2, "句子默认成立、被当作背景的内容", null, "pragmatics|descriptions", "ys")
+    ]),
+    C("lang.structure", "语义结构", "Semantic Structure", [
+      K("compositionality", "组合性", "Compositionality", "概念", 1, "整体意义由部分与组合方式决定", "compositionality", "meaning|semantics", "zhx"),
+      K("logical-form", "逻辑形式", "Logical Form", "概念", 1, "刻画真值条件的句法骨架", "logical-form", "descriptions|compositionality", "ljxs"),
+      K("truth", "真", "Truth", "概念", 1, "句子与事实相合，还是一致、冗余", "truth", "meaning|assertion", "z"),
+      K("propositions", "命题", "Propositions", "概念", 2, "承载真假、可被相信的抽象内容", "propositions", "truth|meaning", "mt"),
+      K("semantics", "语义学", "Semantics", "概念", 1, "系统研究意义与真值条件", null, "pragmatics|compositionality", "yiyx")
+    ]),
+    C("lang.mind", "语言与心灵", "Language and Mind", [
+      K("private-language", "私人语言论证", "Private Language Argument", "论证", 2, "不可能有原则上不可公共检验的语言", "private-language", "rule-following|meaning", "sryylz"),
+      K("rule-following", "遵守规则", "Rule-Following", "问题", 2, "规则如何约束未来的用法", "rule-following", "private-language|meaning", "zsgz"),
+      K("metaphor", "隐喻", "Metaphor", "概念", 2, "字面为假却仍传达内容的表达", "metaphor", "pragmatics|meaning", "yy"),
+      K("slurs", "蔑称", "Slurs", "概念", 2, "携带贬损态度的指称词", "slurs", "reference|pragmatics", "mc"),
+      K("innateness", "语言天赋", "Innateness and Language", "问题", 2, "语言能力有多少出自先天结构", null, "compositionality|rationalism-empiricism", "yytf")
+    ])
+  ]);
 
-        // ==================================================================
-        // 第三层：Primary Branches (19 大核心哲学领域主枝)
-        // ==================================================================
-        {
-            id: "logic", title_en: "1. Logic & Philosophy of Logic", titleZh: "1. 逻辑学与逻辑哲学", nodeType: "Field",
-            description: "The study of valid inference, formal systems, and logical truth.",
-            links: { sep: "https://plato.stanford.edu/entries/logic-philosophy/" },
-            children: [
-                {
-                    id: "logic_classical", title_en: "Classical Logic", titleZh: "经典逻辑", nodeType: "Subfield",
-                    children: [
-                        { id: "prop_logic", title_en: "Propositional Logic", titleZh: "命题逻辑", nodeType: "Concept", links: { sep: "https://plato.stanford.sdu/entries/logic-classical/" } },
-                        { id: "first_order", title_en: "First-Order Predicate Logic", titleZh: "一阶谓词逻辑", nodeType: "Concept", links: { sep: "https://plato.stanford.edu/entries/logic-classical/" } }
-                    ]
-                },
-                {
-                    id: "logic_non_classical", title_en: "Non-Classical Logic", titleZh: "非经典逻辑", nodeType: "Subfield",
-                    children: [
-                        { id: "modal_logic", title_en: "Modal Logic", titleZh: "模态逻辑", nodeType: "Theory", philosophers: ["C. I. Lewis", "Saul Kripke"], links: { sep: "https://plato.stanford.edu/entries/logic-modal/" } },
-                        { id: "intuitionistic_logic", title_en: "Intuitionistic Logic", titleZh: "直觉主义逻辑", nodeType: "Theory", philosophers: ["L. E. J. Brouwer", "Arend Heyting"], links: { sep: "https://plato.stanford.edu/entries/logic-intuitionistic/" } },
-                        { id: "paraconsistent_logic", title_en: "Paraconsistent Logic", titleZh: "次协调逻辑", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/logic-paraconsistent/" } }
-                    ]
-                },
-                {
-                    id: "logic_metatheory", title_en: "Logical Metatheory", titleZh: "逻辑元理论", nodeType: "Subfield",
-                    children: [
-                        { id: "completeness", title_en: "Completeness & Soundness", titleZh: "完全性与可靠性", nodeType: "Concept", philosophers: ["Kurt Gödel"], links: { sep: "https://plato.stanford.edu/entries/goedel/" } },
-                        { id: "incompleteness", title_en: "Gödel's Incompleteness Theorems", titleZh: "哥德尔不完全性定理", nodeType: "Argument", philosophers: ["Kurt Gödel"], links: { sep: "https://plato.stanford.edu/entries/goedel-incompleteness/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_of_language", title_en: "2. Philosophy of Language", titleZh: "2. 语言哲学", nodeType: "Field",
-            description: "The study of meaning, reference, truth, and speech acts.",
-            links: { sep: "https://plato.stanford.edu/entries/meaning/" },
-            children: [
-                {
-                    id: "lang_reference", title_en: "Reference & Descriptions", titleZh: "指称与摹状词", nodeType: "Subfield",
-                    children: [
-                        { id: "sense_reference", title_en: "Sense and Reference (Sinn & Bedeutung)", titleZh: "涵义与指称", nodeType: "Theory", philosophers: ["Gottlob Frege"], links: { sep: "https://plato.stanford.edu/entries/frege-meaning/" } },
-                        { id: "theory_descriptions", title_en: "Theory of Descriptions", titleZh: "摹状词理论", nodeType: "Theory", philosophers: ["Bertrand Russell"], links: { sep: "https://plato.stanford.edu/entries/russell/#RusTheDes" } },
-                        { id: "rigid_designator", title_en: "Rigid Designators", titleZh: "严格指示词", nodeType: "Concept", philosophers: ["Saul Kripke"], links: { sep: "https://plato.stanford.edu/entries/rigid-designators/" } }
-                    ]
-                },
-                {
-                    id: "lang_pragmatics", title_en: "Pragmatics & Speech Acts", titleZh: "语用学与言语行为", nodeType: "Subfield",
-                    children: [
-                        { id: "speech_acts", title_en: "Speech Act Theory", titleZh: "言语行为理论", nodeType: "Theory", philosophers: ["J. L. Austin", "John Searle"], links: { sep: "https://plato.stanford.edu/entries/speech-acts/" } },
-                        { id: "gricean_implicature", title_en: "Gricean Implicature", titleZh: "格莱伊斯会话涵义", nodeType: "Concept", philosophers: ["H. P. Grice"], links: { sep: "https://plato.stanford.edu/entries/implicature/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "epistemology", title_en: "3. Epistemology", titleZh: "3. 认识论", nodeType: "Field",
-            description: "The study of knowledge, justification, and skepticism.",
-            links: { sep: "https://plato.stanford.edu/entries/epistemology/" },
-            children: [
-                {
-                    id: "epist_analysis", title_en: "Analysis of Knowledge", titleZh: "知识的分析", nodeType: "Subfield",
-                    children: [
-                        { id: "jtb_account", title_en: "Justified True Belief (JTB)", titleZh: "证成的真信念账户", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/knowledge-analysis/" } },
-                        { id: "gettier_problem", title_en: "The Gettier Problem", titleZh: "盖梯尔问题", nodeType: "Argument", philosophers: ["Edmund Gettier"], links: { sep: "https://plato.stanford.edu/entries/knowledge-analysis/#GettierProblem" } }
-                    ]
-                },
-                {
-                    id: "epist_justification", title_en: "Theories of Justification", titleZh: "证成理论", nodeType: "Subfield",
-                    children: [
-                        { id: "foundationalism", title_en: "Foundationalism", titleZh: "基础主义", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/justep-foundational/" } },
-                        { id: "coherentism", title_en: "Coherentism", titleZh: "融贯主义", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/justep-coherence/" } },
-                        { id: "reliabilism", title_en: "Reliabilism", titleZh: "可靠主义", nodeType: "Theory", philosophers: ["Alvin Goldman"], links: { sep: "https://plato.stanford.edu/entries/reliabilism/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_of_mind", title_en: "4. Philosophy of Mind", titleZh: "4. 心灵哲学", nodeType: "Field",
-            description: "The study of mind, consciousness, qualia, and mental causation.",
-            links: { sep: "https://plato.stanford.edu/entries/mind/" },
-            children: [
-                {
-                    id: "mind_historical", title_en: "Historical Foundations of Mind", titleZh: "心灵哲学的历史思想源流", nodeType: "Subfield",
-                    children: [
-                        { id: "plato_soul", title_en: "Plato on the Soul", titleZh: "柏拉图论灵魂", nodeType: "HistoricalSource", philosophers: ["Plato"], links: { sep: "https://plato.stanford.edu/entries/plato-ethics/" } },
-                        { id: "aristotle_anima", title_en: "Aristotle: De Anima (On the Soul)", titleZh: "亚里士多德：《论灵魂》", nodeType: "HistoricalSource", philosophers: ["Aristotle"], links: { sep: "https://plato.stanford.edu/entries/aristotle-psychology/" } },
-                        { id: "descartes_dualism", title_en: "Descartes and Substance Dualism", titleZh: "笛卡尔的心物二元论", nodeType: "HistoricalSource", philosophers: ["René Descartes"], links: { sep: "https://plato.stanford.edu/entries/descartes-physics/" } }
-                    ]
-                },
-                {
-                    id: "mind_body_problem", title_en: "The Mind-Body Problem", titleZh: "心物问题", nodeType: "Subfield",
-                    children: [
-                        { id: "substance_dualism", title_en: "Substance Dualism", titleZh: "实体二元论", nodeType: "Theory", philosophers: ["René Descartes"], links: { sep: "https://plato.stanford.edu/entries/dualism/" } },
-                        { id: "physicalism", title_en: "Physicalism & Materialism", titleZh: "物理主义与唯物主义", nodeType: "Theory", philosophers: ["J. J. C. Smart", "D. M. Armstrong"], links: { sep: "https://plato.stanford.edu/entries/physicalism/" } },
-                        { id: "functionalism", title_en: "Functionalism", titleZh: "功能主义", nodeType: "Theory", philosophers: ["Hilary Putnam", "Jerry Fodor"], links: { sep: "https://plato.stanford.edu/entries/functionalism/" } },
-                        { id: "anomalous_monism", title_en: "Anomalous Monism", titleZh: "异常一元论", nodeType: "Theory", philosophers: ["Donald Davidson"], links: { sep: "https://plato.stanford.edu/entries/davidson/" } }
-                    ]
-                },
-                {
-                    id: "consciousness", title_en: "Consciousness & Qualia", titleZh: "意识与感觉质", nodeType: "Subfield",
-                    children: [
-                        { id: "qualia", title_en: "Qualia", titleZh: "感觉质 (Qualia)", nodeType: "Concept", links: { sep: "https://plato.stanford.edu/entries/qualia/" } },
-                        { id: "hard_problem", title_en: "The Hard Problem of Consciousness", titleZh: "意识的难问题", nodeType: "Argument", philosophers: ["David Chalmers"], links: { sep: "https://plato.stanford.edu/entries/consciousness-chic/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "metaphysics", title_en: "5. Metaphysics", titleZh: "5. 形而上学", nodeType: "Field",
-            description: "The study of being, existence, modality, and causation.",
-            links: { sep: "https://plato.stanford.edu/entries/metaphysics/" },
-            children: [
-                {
-                    id: "meta_ontology", title_en: "Ontology & Universals", titleZh: "本体论与共相", nodeType: "Subfield",
-                    children: [
-                        { id: "universals_particulars", title_en: "Universals and Particulars", titleZh: "共相与殊相", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/universals/" } },
-                        { id: "realism_nominalism", title_en: "Realism vs. Nominalism", titleZh: "实在论与唯名论", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/nominalism-metaphysics/" } }
-                    ]
-                },
-                {
-                    id: "meta_modality", title_en: "Modality & Possible Worlds", titleZh: "模态与可能世界", nodeType: "Subfield",
-                    children: [
-                        { id: "possible_worlds", title_en: "Possible Worlds", titleZh: "可能世界", nodeType: "Concept", philosophers: ["Gottfried Leibniz", "David Lewis", "Saul Kripke"], links: { sep: "https://plato.stanford.edu/entries/possible-worlds/" } },
-                        { id: "essentialism", title_en: "Essentialism", titleZh: "本质主义", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/essential-accidental/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_of_science", title_en: "6. Philosophy of Science", titleZh: "6. 科学哲学", nodeType: "Field",
-            description: "The study of scientific method, explanation, and realism.",
-            links: { sep: "https://plato.stanford.edu/entries/science/" },
-            children: [
-                {
-                    id: "sci_confirmation", title_en: "Confirmation & Falsification", titleZh: "确认与证伪", nodeType: "Subfield",
-                    children: [
-                        { id: "falsificationism", title_en: "Karl Popper & Falsificationism", titleZh: "波普尔与证伪主义", nodeType: "Theory", philosophers: ["Karl Popper"], links: { sep: "https://plato.stanford.edu/entries/popper/" } },
-                        { id: "paradigm_shifts", title_en: "Thomas Kuhn & Paradigm Shifts", titleZh: "库恩与范式转换", nodeType: "Theory", philosophers: ["Thomas Kuhn"], links: { sep: "https://plato.stanford.edu/entries/thomas-kuhn/" } }
-                    ]
-                },
-                {
-                    id: "sci_realism", title_en: "Scientific Realism", titleZh: "科学实在论", nodeType: "Subfield",
-                    children: [
-                        { id: "scientific_realism_theory", title_en: "Scientific Realism vs. Anti-Realism", titleZh: "科学实在论与反实在论", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/scientific-realism/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_of_mathematics", title_en: "7. Philosophy of Mathematics", titleZh: "7. 数学哲学", nodeType: "Field",
-            description: "The study of mathematical truth and ontological status of numbers.",
-            links: { sep: "https://plato.stanford.edu/entries/philosophy-mathematics/" },
-            children: [
-                {
-                    id: "math_schools", title_en: "Foundational Schools", titleZh: "数学基础流派", nodeType: "Subfield",
-                    children: [
-                        { id: "logicism", title_en: "Logicism", titleZh: "逻辑主义", nodeType: "Theory", philosophers: ["Gottlob Frege", "Bertrand Russell"], links: { sep: "https://plato.stanford.edu/entries/logicism/" } },
-                        { id: "intuitionism_math", title_en: "Intuitionism", titleZh: "直觉主义数学", nodeType: "Theory", philosophers: ["L. E. J. Brouwer"], links: { sep: "https://plato.stanford.edu/entries/intuitionism-mathematics/" } },
-                        { id: "platonism_math", title_en: "Mathematical Platonism", titleZh: "数学柏拉图主义", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/platonism-mathematics/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_of_action", title_en: "8. Philosophy of Action", titleZh: "8. 行动哲学", nodeType: "Field",
-            description: "The study of agency, intention, and free will.",
-            links: { sep: "https://plato.stanford.edu/entries/action/" },
-            children: [
-                {
-                    id: "action_reasons", title_en: "Intentions & Reasons", titleZh: "意图与行动理由", nodeType: "Subfield",
-                    children: [
-                        { id: "davidson_action", title_en: "Davidson's Theory of Action", titleZh: "戴维森的行动因果理论", nodeType: "Theory", philosophers: ["Donald Davidson"], links: { sep: "https://plato.stanford.edu/entries/action/" } },
-                        { id: "free_will_compatibilism", title_en: "Free Will & Compatibilism", titleZh: "自由意志与兼容论", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/compatibilism/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "ethics_metaethics", title_en: "9. Ethics & Metaethics", titleZh: "9. 伦理学与元伦理学", nodeType: "Field",
-            description: "The study of moral facts, moral language, and normative duties.",
-            links: { sep: "https://plato.stanford.edu/entries/metaethics/" },
-            children: [
-                {
-                    id: "metaethics_realism", title_en: "Metaethical Theories", titleZh: "元伦理学流派", nodeType: "Subfield",
-                    children: [
-                        { id: "moral_realism", title_en: "Moral Realism", titleZh: "道德实在论", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/moral-realism/" } },
-                        { id: "expressivism", title_en: "Expressivism & Emotivism", titleZh: "表达主义与情感主义", nodeType: "Theory", philosophers: ["A. J. Ayer", "C. L. Stevenson"], links: { sep: "https://plato.stanford.edu/entries/moral-cognitivism/" } }
-                    ]
-                },
-                {
-                    id: "normative_ethics", title_en: "Normative Ethics", titleZh: "规范伦理学", nodeType: "Subfield",
-                    children: [
-                        { id: "consequentialism", title_en: "Consequentialism", titleZh: "后果主义", nodeType: "Theory", philosophers: ["John Stuart Mill", "Jeremy Bentham"], links: { sep: "https://plato.stanford.edu/entries/consequentialism/" } },
-                        { id: "deontology", title_en: "Deontology", titleZh: "义务论", nodeType: "Theory", philosophers: ["Immanuel Kant"], links: { sep: "https://plato.stanford.edu/entries/ethics-deontological/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "political_philosophy", title_en: "10. Political Philosophy", titleZh: "10. 政治哲学", nodeType: "Field",
-            description: "The study of justice, rights, and legitimate authority.",
-            links: { sep: "https://plato.stanford.edu/entries/political-philosophy/" },
-            children: [
-                {
-                    id: "pol_justice", title_en: "Theories of Justice", titleZh: "正义论", nodeType: "Subfield",
-                    children: [
-                        { id: "rawlsian_justice", title_en: "John Rawls: Justice as Fairness", titleZh: "罗尔斯：作为公平的正义", nodeType: "Theory", philosophers: ["John Rawls"], links: { sep: "https://plato.stanford.edu/entries/rawls/" } },
-                        { id: "libertarianism", title_en: "Robert Nozick's Libertarianism", titleZh: "诺齐克的自由至上主义", nodeType: "Theory", philosophers: ["Robert Nozick"], links: { sep: "https://plato.stanford.edu/entries/libertarianism/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_of_religion", title_en: "11. Philosophy of Religion", titleZh: "11. 宗教哲学", nodeType: "Field",
-            description: "The study of religious belief, attributes of God, and problem of evil.",
-            links: { sep: "https://plato.stanford.edu/entries/philosophy-religion/" },
-            children: [
-                {
-                    id: "rel_existence_god", title_en: "Arguments for God & Problem of Evil", titleZh: "上帝存在论证与恶的问题", nodeType: "Subfield",
-                    children: [
-                        { id: "problem_of_evil", title_en: "The Problem of Evil", titleZh: "恶的问题", nodeType: "Argument", philosophers: ["Alvin Goldman", "J. L. Mackie"], links: { sep: "https://plato.stanford.edu/entries/evil/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "aesthetics", title_en: "12. Aesthetics", titleZh: "12. 美学与艺术哲学", nodeType: "Field",
-            description: "The nature of beauty, art, and aesthetic experience.",
-            links: { sep: "https://plato.stanford.edu/entries/aesthetics/" },
-            children: [
-                {
-                    id: "aest_nature_art", title_en: "Ontology and Definition of Art", titleZh: "艺术的本体论与定义", nodeType: "Subfield",
-                    children: [
-                        { id: "definition_art", title_en: "Definition of Art", titleZh: "艺术的定义", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/art-definition/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_cognitive_science", title_en: "13. Philosophy of Cognitive Science", titleZh: "13. 认知科学哲学", nodeType: "Field",
-            description: "Modularity of mind, connectionism, and embodied cognition.",
-            links: { sep: "https://plato.stanford.edu/entries/cognitive-science/" },
-            children: [
-                {
-                    id: "cog_architecture", title_en: "Cognitive Architecture", titleZh: "认知架构与具身认知", nodeType: "Subfield",
-                    children: [
-                        { id: "embodied_cognition", title_en: "Embodied & Extended Cognition", titleZh: "具身与延展认知", nodeType: "Theory", philosophers: ["Andy Clark", "David Chalmers"], links: { sep: "https://plato.stanford.edu/entries/embodied-cognition/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_ai", title_en: "14. Philosophy of Artificial Intelligence", titleZh: "14. 人工智能哲学", nodeType: "Field",
-            description: "Machine consciousness, Turing test, and intentionality of AI.",
-            links: { sep: "https://plato.stanford.edu/entries/artificial-intelligence/" },
-            children: [
-                {
-                    id: "ai_chinese_room", title_en: "Machine Intentionality & Chinese Room", titleZh: "机器意向性与中文屋论证", nodeType: "Subfield",
-                    children: [
-                        { id: "chinese_room", title_en: "The Chinese Room Argument", titleZh: "中文屋论证", nodeType: "Argument", philosophers: ["John Searle"], links: { sep: "https://plato.stanford.edu/entries/chinese-room/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_social_science", title_en: "15. Philosophy of Social Science", titleZh: "15. 社会科学哲学", nodeType: "Field",
-            description: "Methodological individualism, social ontology, and collective intentionality.",
-            links: { sep: "https://plato.stanford.edu/entries/social-science/" },
-            children: [
-                {
-                    id: "soc_ontology", title_en: "Social Ontology", titleZh: "社会本体论与集体意向性", nodeType: "Subfield",
-                    children: [
-                        { id: "collective_intentionality", title_en: "Collective Intentionality", titleZh: "集体意向性", nodeType: "Theory", philosophers: ["John Searle", "Raimo Tuomela"], links: { sep: "https://plato.stanford.edu/entries/collective-intentionality/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophy_of_law", title_en: "16. Philosophy of Law", titleZh: "16. 法哲学", nodeType: "Field",
-            description: "Legal positivism, natural law, and constitutional interpretation.",
-            links: { sep: "https://plato.stanford.edu/entries/law-phil-nature/" },
-            children: [
-                {
-                    id: "law_positivism", title_en: "Legal Positivism vs. Natural Law", titleZh: "法律实证主义与自然法学", nodeType: "Subfield",
-                    children: [
-                        { id: "legal_positivism", title_en: "Legal Positivism", titleZh: "法律实证主义", nodeType: "Theory", philosophers: ["H. L. A. Hart", "Hans Kelsen"], links: { sep: "https://plato.stanford.edu/entries/legal-positivism/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "decision_theory", title_en: "17. Decision Theory & Rational Choice", titleZh: "17. 决策论与理性选择", nodeType: "Field",
-            description: "Expected utility, game theory, and decision paradoxes.",
-            links: { sep: "https://plato.stanford.edu/entries/decision-theory/" },
-            children: [
-                {
-                    id: "dec_utility", title_en: "Expected Utility & Newcomb's Problem", titleZh: "期望效用与纽科姆悖论", nodeType: "Subfield",
-                    children: [
-                        { id: "newcombs_problem", title_en: "Newcomb's Problem", titleZh: "纽科姆悖论", nodeType: "Argument", philosophers: ["Robert Nozick"], links: { sep: "https://plato.stanford.edu/entries/newcomb-problem/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "philosophical_methodology", title_en: "18. Philosophical Methodology", titleZh: "18. 哲学方法论", nodeType: "Field",
-            description: "Conceptual analysis, thought experiments, and experimental philosophy.",
-            links: { sep: "https://plato.stanford.edu/entries/methods-philosophy/" },
-            children: [
-                {
-                    id: "meth_analysis", title_en: "Conceptual Analysis & X-Phi", titleZh: "概念分析与实验哲学 (X-Phi)", nodeType: "Subfield",
-                    children: [
-                        { id: "experimental_philosophy", title_en: "Experimental Philosophy", titleZh: "实验哲学", nodeType: "Theory", links: { sep: "https://plato.stanford.edu/entries/experimental-philosophy/" } }
-                    ]
-                }
-            ]
-        },
-        {
-            id: "history_analytic", title_en: "19. History & Foundations of Analytic Phil.", titleZh: "19. 分析哲学史与思想基础", nodeType: "Field",
-            description: "The historical evolution and meta-philosophical nature of analytic tradition.",
-            links: { sep: "https://plato.stanford.edu/entries/analytic-philosophy/" },
-            children: [
-                {
-                    id: "hist_tradition", title_en: "The Analytic Tradition", titleZh: "分析哲学传统的元哲学反思", nodeType: "Subfield",
-                    children: [
-                        { id: "analytic_nature", title_en: "Nature of Analytic Philosophy", titleZh: "分析哲学的基本特征", nodeType: "Concept", links: { sep: "https://plato.stanford.edu/entries/analytic-philosophy/" } }
-                    ]
-                }
-            ]
-        }
+  var logic = B("logic", "逻辑与数学哲学", "Logic and Philosophy of Mathematics", "left", 2, "#B08968",
+    "推理形式、真理与数学基础", [
+    C("logic.systems", "逻辑系统", "Logical Systems", [
+      K("logic-classical", "经典逻辑", "Classical Logic", "概念", 1, "以二值与真值函数为核心的逻辑", "logic-classical", "logical-consequence|logic-modal", "jdlj"),
+      K("logic-modal", "模态逻辑", "Modal Logic", "概念", 1, "用必然、可能算子刻画模态", "logic-modal", "possible-worlds|logic-classical", "mtlj"),
+      K("logic-intuitionistic", "直觉主义逻辑", "Intuitionistic Logic", "概念", 2, "拒斥排中律、以构造为真的逻辑", "logic-intuitionistic", "logic-classical|proof-theory", "zjzylj"),
+      K("logic-paraconsistent", "次协调逻辑", "Paraconsistent Logic", "概念", 2, "容许矛盾而不使一切命题成立", "logic-paraconsistent", "logic-classical|truth-values", "ccxtlj"),
+      K("logic-manyvalued", "多值逻辑", "Many-Valued Logic", "概念", 2, "真值多于两个的逻辑系统", "logic-manyvalued", "truth|logic-classical", "dzlj")
+    ]),
+    C("logic.philosophy", "逻辑哲学", "Philosophy of Logic", [
+      K("logical-consequence", "逻辑后承", "Logical Consequence", "概念", 1, "前提真则结论必真的关系", "logical-consequence", "logic-classical|logical-constants", "ljhc"),
+      K("logical-constants", "逻辑常项", "Logical Constants", "概念", 2, "决定论证形式的固定词项", "logical-constants", "logical-consequence|logical-form", "ljcx"),
+      K("identity", "同一性", "Identity", "概念", 2, "对象与自身相同的逻辑关系", "identity", "properties|logic-classical", "tyx"),
+      K("quantifiers", "量词", "Quantifiers", "概念", 2, "表达全部与部分关系的算子", null, "logical-consequence|logic-classical", "lc"),
+      K("truth-values", "真值", "Truth Values", "概念", 2, "句子在真假维度上的取值", null, "truth|logic-manyvalued", "zz")
+    ]),
+    C("logic.math", "数学哲学", "Philosophy of Mathematics", [
+      K("goedel-incompleteness", "哥德尔不完全性定理", "Gödel's Incompleteness Theorems", "论证", 1, "足够强的系统存在不可证的真命题", "goedel-incompleteness", "logicism|platonism-mathematics", "gdebwqxl"),
+      K("set-theory", "集合论", "Set Theory", "概念", 1, "以集合为基本对象的数学基础", "set-theory", "russells-paradox|platonism-mathematics", "jhl"),
+      K("russells-paradox", "罗素悖论", "Russell's Paradox", "问题", 1, "不包含自身的集合所构成的悖论", "russells-paradox", "set-theory|logicism", "lsbl"),
+      K("logicism", "逻辑主义", "Logicism", "立场", 1, "数学可以归约为逻辑", "logicism", "frege|goedel-incompleteness", "ljzy"),
+      K("platonism-mathematics", "数学柏拉图主义", "Platonism in the Philosophy of Mathematics", "立场", 1, "数学对象独立于心灵而存在", "platonism-mathematics", "set-theory|existence", "sxbltzy")
+    ]),
+    C("logic.proof", "证明与模型", "Proof and Models", [
+      K("proof-theory", "证明论", "Proof Theory", "概念", 2, "把证明本身当作对象来研究", "proof-theory", "logic-intuitionistic|goedel-incompleteness", "zml"),
+      K("model-theory", "模型论", "Model Theory", "概念", 2, "用结构解释形式语言的真", "model-theory", "set-theory|logical-consequence", "mxl"),
+      K("type-theory", "类型论", "Type Theory", "概念", 2, "以类型分层避免悖论的基础理论", "type-theory", "russells-paradox|goedel-incompleteness", "lxl"),
+      K("completeness", "完全性", "Completeness", "概念", 2, "有效式皆可证、语义与语法相合", null, "goedel-incompleteness|model-theory", "wqx"),
+      K("computability", "可计算性", "Computability", "概念", 2, "哪些函数能被机械步骤算出", null, "goedel-incompleteness|type-theory", "kjsx")
+    ])
+  ]);
+
+  var epist = B("epist", "认识论", "Epistemology", "left", 3, "#6E8FA8",
+    "知识是什么、信念凭什么被辩护", [
+    C("epist.nature", "知识的本性", "The Nature of Knowledge", [
+      K("knowledge-analysis", "知识分析", "The Analysis of Knowledge", "问题", 1, "知识是否为有辩护的真信念", "knowledge-analysis", "gettier|epistemic-justification", "zsfx"),
+      K("gettier", "葛梯尔问题", "Gettier Problem", "问题", 1, "有辩护的真信念仍可能不是知识", "gettier", "knowledge-analysis|epistemic-justification", "gtewt"),
+      K("apriori", "先验知识", "A Priori Justification and Knowledge", "概念", 1, "不依赖经验即可获得辩护", "apriori", "epistemic-justification|necessity", "xyz s".replace(" ", "")),
+      K("rationalism-empiricism", "理性主义与经验主义", "Rationalism vs. Empiricism", "立场", 2, "知识究竟源于理性还是经验", "rationalism-empiricism", "apriori|induction", "lxzyyjyzy"),
+      K("certainty", "确定性", "Certainty", "概念", 2, "无可怀疑的认知状态", "certainty", "skepticism|apriori", "qdx")
+    ]),
+    C("epist.justification", "辩护", "Epistemic Justification", [
+      K("epistemic-justification", "认知辩护", "Epistemic Justification", "概念", 1, "信念何以为真提供保证", "epistemic-justification", "knowledge-analysis|reliabilism", "rzbh"),
+      K("justification-foundational", "基础主义", "Foundationalist Theories of Justification", "立场", 1, "辩护终止于自明的基础信念", "justification-foundational", "epistemic-justification|justification-coherentism", "jczy"),
+      K("justification-coherentism", "融贯论", "Coherentist Theories of Justification", "立场", 1, "信念因相互支持而成环地辩护", "justification-coherentism", "justification-foundational|epistemic-justification", "rgl"),
+      K("reliabilism", "可靠主义", "Reliabilism", "立场", 1, "由可靠过程产生的真信念即被辩护", "reliabilism", "epistemic-justification|epistemology-virtue", "kkzy"),
+      K("evidentialism", "证据主义", "Evidentialism", "立场", 2, "信念的辩护取决于手中证据", "evidentialism", "epistemic-justification|disagreement", "zjzy")
+    ]),
+    C("epist.virtue", "德性与社会", "Virtue and Social Epistemology", [
+      K("epistemology-virtue", "德性认识论", "Virtue Epistemology", "立场", 1, "知识出自主体的理智德性", "epistemology-virtue", "reliabilism|epistemic-justification", "dxrzl"),
+      K("epistemology-social", "社会认识论", "Social Epistemology", "概念", 1, "知识如何依赖他人与社群", "epistemology-social", "testimony|epistemic-injustice", "shrzl"),
+      K("testimony", "证言", "Testimony", "概念", 2, "听信他人而获得的知识", "testimony", "epistemology-social|epistemic-justification", "zy"),
+      K("epistemic-injustice", "认知不正义", "Epistemic Injustice", "概念", 2, "因身份被削弱可信度或理解力", "epistemic-injustice", "epistemology-social|testimony", "rzbzy"),
+      K("disagreement", "分歧", "Disagreement", "问题", 2, "同侪分歧时该如何调整信念", "disagreement", "epistemic-justification|epistemology-social", "fq")
+    ]),
+    C("epist.skepticism", "怀疑与语境", "Skepticism and Context", [
+      K("skepticism", "怀疑论", "Skepticism", "立场", 1, "我们缺乏知识，或知识需更强条件", "skepticism", "closure-epistemic|certainty", "hyl"),
+      K("skepticism-ancient", "古代怀疑论", "Ancient Skepticism", "概念", 2, "以悬置判断求得宁静的传统", "skepticism-ancient", "skepticism|certainty", "gdhyl"),
+      K("closure-epistemic", "认知闭合", "Epistemic Closure", "概念", 2, "已知所蕴含者是否也被知", "closure-epistemic", "skepticism|epistemic-justification", "rzbi"),
+      K("contextualism-epistemology", "认知语境主义", "Epistemic Contextualism", "立场", 2, "知识标准随语境高低变化", "contextualism-epistemology", "skepticism|epistemic-justification", "rzyjzy"),
+      K("epistemology-bayesian", "贝叶斯认识论", "Bayesian Epistemology", "概念", 2, "用概率与条件化刻画信念更新", "epistemology-bayesian", "epistemic-justification|confirmation", "bysrzl")
+    ])
+  ]);
+
+  var hist = B("hist", "分析哲学史与方法", "History and Method", "left", 4, "#9A9A6B",
+    "从弗雷格到蒯因：方法如何成形", [
+    C("hist.founders", "奠基者", "Founders", [
+      K("frege", "弗雷格", "Frege", "人物", 1, "现代逻辑与分析哲学的共同起点", "frege", "logicism|meaning", "flg"),
+      K("russell", "罗素", "Russell", "人物", 1, "摹状词理论与逻辑原子主义", "russell", "descriptions|logical-atomism", "ls"),
+      K("moore", "摩尔", "Moore", "人物", 2, "以常识与直观反驳唯心论", "moore", "ordinary-language|conceptual-analysis", "me"),
+      K("wittgenstein", "维特根斯坦", "Wittgenstein", "人物", 1, "从图像论走向语言游戏", "wittgenstein", "private-language|rule-following", "wtgst"),
+      K("carnap", "卡尔纳普", "Carnap", "人物", 1, "逻辑经验主义与语言框架", "carnap", "logical-empiricism|analytic-synthetic", "kenp")
+    ]),
+    C("hist.method", "方法", "Method", [
+      K("analysis", "分析", "Analysis", "概念", 1, "把复杂概念拆解为更基本成分", "analysis", "conceptual-analysis|ordinary-language", "fx"),
+      K("logical-atomism", "逻辑原子主义", "Logical Atomism", "立场", 2, "世界由逻辑独立的原子事实构成", "logical-atomism", "russell|wittgenstein", "ljyzzy"),
+      K("logical-empiricism", "逻辑经验主义", "Logical Empiricism", "立场", 1, "有意义者须可经验验证", "logical-empiricism", "carnap|analytic-synthetic", "ljjyyz"),
+      K("ordinary-language", "日常语言哲学", "Ordinary Language Philosophy", "立场", 2, "回到用法本身消解哲学困惑", "ordinary-language", "wittgenstein|analysis", "rcyyzx"),
+      K("conceptual-analysis", "概念分析", "Conceptual Analysis", "概念", 2, "以必要充分条件刻画概念", "conceptual-analysis", "analysis|experimental-philosophy", "gnfx")
+    ]),
+    C("hist.distinctions", "核心区分", "Key Distinctions", [
+      K("analytic-synthetic", "分析/综合区分", "Analytic/Synthetic Distinction", "概念", 1, "凭意义为真与凭事实为真", "analytic-synthetic", "quine|logical-empiricism", "fxzhqc"),
+      K("necessity", "必然性", "Necessity", "概念", 2, "不可能为假的存在方式", "necessity", "possible-worlds|apriori", "brx"),
+      K("quine", "蒯因", "Quine", "人物", 1, "整体主义与自然化认识论", "quine", "analytic-synthetic|naturalism", "ky"),
+      K("davidson", "戴维森", "Davidson", "人物", 2, "行动理由与语言解释", "davidson", "action|meaning", "dss"),
+      K("grice", "格赖斯", "Grice", "人物", 2, "会话含意与意义理论", "grice", "implicature|meaning", "gls")
+    ]),
+    C("hist.contemporary", "当代走向", "Contemporary Turns", [
+      K("naturalism", "自然主义", "Naturalism", "立场", 1, "哲学应与经验科学保持连续", "naturalism", "quine|reliabilism", "zrzy"),
+      K("experimental-philosophy", "实验哲学", "Experimental Philosophy", "概念", 2, "用问卷检验哲学直觉", "experimental-philosophy", "conceptual-analysis|disagreement", "syzx"),
+      K("sellars", "塞拉斯", "Sellars", "人物", 2, "在科学图像与显明图像之间", "sellars", "naturalism|conceptual-analysis", "sls"),
+      K("ryle", "赖尔", "Ryle", "人物", 2, "以范畴错误批评笛卡尔式心灵", "ryle", "dualism|ordinary-language", "le"),
+      K("dummett", "达米特", "Dummett", "人物", 2, "意义即使用、反实在论", "dummett", "meaning|truth", "dmt")
+    ])
+  ]);
+
+  var mind = B("mind", "心灵哲学", "Philosophy of Mind", "right", 1, "#8C7AA8",
+    "心灵与身体、意识与内容究竟是什么", [
+    C("mind.body", "心物关系", "Mind-Body Problem", [
+      K("dualism", "二元论", "Dualism", "立场", 1, "心灵与身体是两类不同实体", "dualism", "physicalism|mental-causation", "eyl"),
+      K("physicalism", "物理主义", "Physicalism", "立场", 1, "一切存在最终都是物理的", "physicalism", "dualism|supervenience", "wlzy"),
+      K("functionalism", "功能主义", "Functionalism", "立场", 1, "心灵状态由因果角色而定", "functionalism", "properties-emergent|qualia", "gnzy"),
+      K("neutral-monism", "中性一元论", "Neutral Monism", "立场", 2, "心与物是同一中性材料的两面", "neutral-monism", "panpsychism|dualism", "zxyyl"),
+      K("mind-body-problem", "心身问题", "Mind-Body Problem", "问题", 1, "心理状态如何与物理状态相关", "mind-body-problem", "dualism|physicalism", "xswt")
+    ]),
+    C("mind.consciousness", "意识", "Consciousness", [
+      K("consciousness", "意识", "Consciousness", "概念", 1, "经验的主观在场", "consciousness", "qualia|hard-problem", "ys"),
+      K("qualia", "感受质", "Qualia", "概念", 1, "经验中「像什么」那样的主观特征", "qualia", "consciousness|physicalism", "gsz"),
+      K("hard-problem", "困难问题", "The Hard Problem of Consciousness", "问题", 1, "为何物理过程伴随主观经验", "hard-problem", "consciousness|qualia", "knwt"),
+      K("panpsychism", "泛心论", "Panpsychism", "立场", 2, "意识是万物的基本特征", "panpsychism", "neutral-monism|hard-problem", "fxl"),
+      K("properties-emergent", "突现属性", "Emergent Properties", "概念", 2, "整体层面出现、不可还原的新性质", "properties-emergent", "supervenience|reduction", "txsx")
+    ]),
+    C("mind.content", "内容与意向", "Content and Intentionality", [
+      K("intentionality", "意向性", "Intentionality", "概念", 1, "心理状态指向对象与事态", "intentionality", "mental-content|meaning", "yxx"),
+      K("mental-content", "心理内容", "Mental Content", "概念", 2, "信念与知觉所表征的内容", "mental-content", "intentionality|propositions", "xlnr"),
+      K("chinese-room", "中文屋", "Chinese Room Argument", "论证", 1, "按规则操作符号不等于理解", "chinese-room", "intentionality|artificial-intelligence", "zww"),
+      K("artificial-intelligence", "人工智能", "Artificial Intelligence", "概念", 2, "机器能否具有心灵", "artificial-intelligence", "chinese-room|turing-test", "rgzn"),
+      K("turing-test", "图灵测试", "Turing Test", "概念", 2, "以对话行为判定机器智能", "turing-test", "artificial-intelligence|chinese-room", "tlcs")
+    ]),
+    C("mind.architecture", "心灵架构", "Architecture of Mind", [
+      K("connectionism", "联结主义", "Connectionism", "概念", 2, "用网络权重解释认知", "connectionism", "modularity-mind|embodied-cognition", "lianjzy"),
+      K("modularity-mind", "心智模块性", "Modularity of Mind", "概念", 2, "心灵由领域特殊的模块组成", "modularity-mind", "connectionism|extended-mind", "xzmkx"),
+      K("extended-mind", "延展心灵", "Extended Mind", "立场", 2, "认知过程可以延伸到环境", "extended-mind", "embodied-cognition|intentionality", "yzxl"),
+      K("embodied-cognition", "具身认知", "Embodied Cognition", "概念", 2, "认知依赖身体与行动", "embodied-cognition", "extended-mind|consciousness", "jsrz"),
+      K("mental-causation", "心理因果", "Mental Causation", "问题", 1, "心理状态能否引起物理变化", "mental-causation", "dualism|physicalism", "xlyg")
+    ])
+  ]);
+
+  var meta = B("meta", "形而上学", "Metaphysics", "right", 2, "#A8836B",
+    "存在什么、如何存在、如何变化", [
+    C("meta.ontology", "存在与范畴", "Existence and Categories", [
+      K("existence", "存在", "Existence", "概念", 1, "说某物存在究竟意味着什么", "existence", "universals|ontological-commitment", "cz"),
+      K("universals", "共相", "Universals", "概念", 1, "多个事物共享的性质是否实在", "universals", "properties|nominalism", "gx"),
+      K("properties", "属性", "Properties", "概念", 1, "事物所具有的性质究竟是什么", "properties", "universals|dispositions", "sx"),
+      K("nominalism", "唯名论", "Nominalism", "立场", 2, "只存在个别事物，没有共相", "nominalism", "universals|properties", "wml"),
+      K("ontological-commitment", "本体论承诺", "Ontological Commitment", "概念", 2, "理论说有什么才算有什么", "ontological-commitment", "existence|quine", "btlcn")
+    ]),
+    C("meta.modality", "模态", "Modality", [
+      K("possible-worlds", "可能世界", "Possible Worlds", "概念", 1, "刻画可能与必然的模型", "possible-worlds", "modality|necessity", "knsj"),
+      K("modality", "模态", "Modality", "概念", 1, "必然、可能、不可能的存在方式", "modality", "possible-worlds|necessity", "mt"),
+      K("essential-accidental", "本质与偶性", "Essential vs. Accidental Properties", "概念", 2, "哪些属性属于事物的本质", "essential-accidental", "properties|modality", "bzyx"),
+      K("counterfactuals", "反事实条件句", "Counterfactuals", "概念", 2, "若怎样则怎样的虚拟条件", "counterfactuals", "causation-counterfactual|modality", "fssj"),
+      K("dispositions", "倾向", "Dispositions", "概念", 2, "事物在特定条件下会如何反应", "dispositions", "properties|laws-nature", "qx")
+    ]),
+    C("meta.identity", "同一与构成", "Identity and Constitution", [
+      K("identity-time", "历时同一性", "Identity over Time", "问题", 1, "对象在变化中如何保持同一", "identity-time", "identity-personal|persistence", "lstyx"),
+      K("identity-personal", "人格同一性", "Personal Identity", "问题", 1, "什么使一个人跨时间还是同一个人", "identity-personal", "identity-time|moral-responsibility", "rgtyx"),
+      K("material-constitution", "物质构成", "Material Constitution", "问题", 2, "同一堆材料能构成几个对象", "material-constitution", "identity-time|mereology", "wztc"),
+      K("mereology", "分体论", "Mereology", "概念", 2, "部分与整体的形式关系", "mereology", "material-constitution|identity-time", "ftl"),
+      K("persistence", "持存", "Persistence", "概念", 2, "对象如何在时间中延续", "persistence", "identity-time|time", "cx")
+    ]),
+    C("meta.causation", "因果与时间", "Causation and Time", [
+      K("causation-metaphysical", "因果性", "Causation", "概念", 1, "一个事件何以产生另一个事件", "causation-metaphysical", "causation-counterfactual|laws-nature", "ygx"),
+      K("causation-counterfactual", "反事实因果", "Counterfactual Theories of Causation", "立场", 2, "因果就是反事实依赖", "causation-counterfactual", "causation-metaphysical|counterfactuals", "fsyyg"),
+      K("time", "时间", "Time", "概念", 1, "时间流逝与先后关系是否客观", "time", "persistence|causation-metaphysical", "sj"),
+      K("determinism-causal", "因果决定论", "Causal Determinism", "立场", 2, "过去与定律决定未来", "determinism-causal", "freewill|causation-metaphysical", "ygjd"),
+      K("supervenience", "随附性", "Supervenience", "概念", 2, "低层属性固定则高层随之固定", "supervenience", "properties-emergent|physicalism", "sfx")
+    ])
+  ]);
+
+  var sci = B("sci", "科学哲学", "Philosophy of Science", "right", 3, "#A87A8A",
+    "科学理论为真吗、说明与进步如何可能", [
+    C("sci.realism", "实在论与理论", "Realism and Theory", [
+      K("scientific-realism", "科学实在论", "Scientific Realism", "立场", 1, "成熟科学理论近似为真", "scientific-realism", "theory-observation|constructive-empiricism", "kxszl"),
+      K("constructive-empiricism", "建构经验主义", "Constructive Empiricism", "立场", 2, "理论只求经验适当，不求为真", "constructive-empiricism", "scientific-realism|underdetermination", "jjjyyz"),
+      K("theory-observation", "理论与观察", "Theory and Observation", "概念", 1, "观察是否独立于理论", "theory-observation", "scientific-realism|experiment", "llygc"),
+      K("underdetermination", "不充分决定", "Underdetermination of Scientific Theory", "问题", 1, "证据不足以在理论间抉择", "underdetermination", "scientific-realism|theory-observation", "bcfjd"),
+      K("scientific-revolution", "科学革命", "Scientific Revolutions", "概念", 1, "范式更替而非累积进步", "scientific-revolution", "thomas-kuhn|scientific-progress", "kxgm")
+    ]),
+    C("sci.explanation", "说明与定律", "Explanation and Laws", [
+      K("scientific-explanation", "科学说明", "Scientific Explanation", "概念", 1, "说明比描述多出了什么", "scientific-explanation", "laws-nature|causation-manipulation", "kxsm"),
+      K("laws-nature", "自然定律", "Laws of Nature", "概念", 1, "定律是必然关系还是规则性", "laws-nature", "dispositions|causation-metaphysical", "zrdl"),
+      K("models-science", "科学模型", "Models in Science", "概念", 2, "模型如何中介理论与世界", "models-science", "scientific-explanation|reduction", "kxmx"),
+      K("scientific-progress", "科学进步", "Scientific Progress", "概念", 1, "科学知识是否在逼近真理", "scientific-progress", "scientific-revolution|scientific-realism", "kxjb"),
+      K("reduction", "还原", "Reduction", "概念", 2, "高层理论能否被低层理论吸收", "reduction", "physicalism|models-science", "hy")
+    ]),
+    C("sci.causation", "因果与推断", "Causation and Inference", [
+      K("causation-probabilistic", "概率因果", "Probabilistic Causation", "概念", 2, "原因提高结果发生的概率", "causation-probabilistic", "causation-manipulation|confirmation", "glyg"),
+      K("causation-manipulation", "干预主义因果", "Causation and Manipulability", "概念", 2, "因果就是干预之下的变化", "causation-manipulation", "causation-probabilistic|laws-nature", "gyzyyg"),
+      K("induction", "归纳问题", "The Problem of Induction", "问题", 1, "归纳推理如何得到辩护", "induction", "confirmation|rationalism-empiricism", "glwt"),
+      K("confirmation", "确证", "Confirmation", "概念", 2, "证据如何支持一个假说", "confirmation", "induction|epistemology-bayesian", "qz"),
+      K("experiment", "实验", "Experiment in Physics", "概念", 2, "实验如何产生可信的事实", null, "theory-observation|scientific-realism", "sy")
+    ]),
+    C("sci.change", "科学变迁", "Scientific Change", [
+      K("thomas-kuhn", "库恩", "Thomas Kuhn", "人物", 1, "范式、常规科学与危机", "thomas-kuhn", "scientific-revolution|popper", "ke"),
+      K("popper", "波普尔", "Karl Popper", "人物", 1, "以可证伪性作为科学划界", "popper", "falsifiability|thomas-kuhn", "bpe"),
+      K("falsifiability", "可证伪性", "Falsifiability", "概念", 2, "能被观察反驳的才算科学", "falsifiability", "popper|demarcation", "kzwx"),
+      K("lakatos", "拉卡托斯", "Lakatos", "人物", 2, "研究纲领的硬核与保护带", "lakatos", "thomas-kuhn|popper", "lkts"),
+      K("demarcation", "划界问题", "Demarcation", "问题", 2, "科学与非科学如何区分", null, "falsifiability|popper", "hjwt")
+    ])
+  ]);
+
+  var action = B("action", "行动哲学", "Philosophy of Action", "right", 4, "#6F8F8A",
+    "什么算行动、为何行动、谁该负责", [
+    C("action.intention", "行动与意图", "Action and Intention", [
+      K("action", "行动", "Action", "概念", 1, "什么使一个事件成为行动", "action", "intention|practical-reason", "xd"),
+      K("intention", "意图", "Intention", "概念", 1, "意图是信念还是独特心理状态", "intention", "action|weakness-will", "yt"),
+      K("practical-reason", "实践理性", "Practical Reason", "概念", 1, "如何从目的推出该做什么", "practical-reason", "action|intention", "sjlx"),
+      K("reasons-internal-external", "内在与外在理由", "Reasons for Action", "概念", 2, "理由是否必然与动机相连", "reasons-internal-external", "practical-reason|moral-responsibility", "nzywzly"),
+      K("instrumental-reason", "工具理性", "Instrumental Rationality", "概念", 2, "手段与目的之间的理性要求", null, "practical-reason|action", "gjlx")
+    ]),
+    C("action.will", "意志与自由", "Will and Freedom", [
+      K("weakness-will", "意志薄弱", "Weakness of Will", "问题", 1, "明知该做却做不到", "weakness-will", "intention|practical-reason", "yzbr"),
+      K("freewill", "自由意志", "Free Will", "问题", 1, "行动能否出于自己而非被决定", "freewill", "compatibilism|determinism-causal", "zyyz"),
+      K("compatibilism", "相容论", "Compatibilism", "立场", 1, "自由与决定论可以并存", "compatibilism", "freewill|moral-responsibility", "xrl"),
+      K("agent-causation", "行动者因果", "Agent Causation", "概念", 2, "行动者本身作为原因的开端", "agent-causation", "freewill|causation-metaphysical", "xdzyg"),
+      K("moral-responsibility", "道德责任", "Moral Responsibility", "概念", 1, "何时该为行为负责", "moral-responsibility", "freewill|blame", "ddze")
+    ]),
+    C("action.collective", "集体与共享", "Collective and Shared", [
+      K("collective-intentionality", "集体意向性", "Collective Intentionality", "概念", 1, "我们的意图如何不同于我的意图", "collective-intentionality", "shared-agency|convention", "jtyxx"),
+      K("shared-agency", "共享能动性", "Shared Agency", "概念", 2, "多人如何共同行动", "shared-agency", "collective-intentionality|action", "gxdnx"),
+      K("convention", "约定", "Convention", "概念", 2, "协调问题如何形成稳定预期", "convention", "collective-intentionality|joint-commitment", "yd"),
+      K("joint-commitment", "联合承诺", "Joint Commitment", "概念", 2, "共同行动中的相互义务", null, "shared-agency|collective-intentionality", "lhcn"),
+      K("blame", "责备", "Blame", "概念", 2, "责备是否预设自由与能力", "blame", "moral-responsibility|doing-allowing", "zb")
+    ]),
+    C("action.normative", "行动与规范", "Action and Norms", [
+      K("double-effect", "双重效应", "Doctrine of Double Effect", "概念", 2, "副作用与作为手段的区分", "double-effect", "intention|doing-allowing", "scxy"),
+      K("doing-allowing", "作为与放任", "Doing vs. Allowing Harm", "概念", 2, "主动伤害与放任伤害之别", "doing-allowing", "double-effect|moral-responsibility", "zwyfl"),
+      K("autonomy-moral", "自主性", "Autonomy", "概念", 2, "自己为自己立法", "autonomy-moral", "practical-reason|moral-responsibility", "zzx"),
+      K("action-individuation", "行动个体化", "Action Individuation", "概念", 2, "一个行动还是多个行动", null, "action|intention", "xdgth"),
+      K("causal-theory-action", "行动的因果理论", "The Causal Theory of Action", "立场", 2, "行动由意图引起", null, "action|intention", "xdygll")
+    ])
+  ]);
+
+  return {
+    version: "1.0",
+    branches: [lang, logic, epist, hist, mind, meta, sci, action],
+    crossLinks: [
+      L("chinese-room", "meaning", "语义与理解"),
+      L("intentionality", "meaning", "意义与意向"),
+      L("mental-content", "propositions", "内容与命题"),
+      L("causation-metaphysical", "laws-nature", "因果与定律"),
+      L("dispositions", "laws-nature", "倾向与定律"),
+      L("freewill", "determinism-causal", "自由与决定"),
+      L("davidson", "action", "理由与行动"),
+      L("quine", "ontological-commitment", "承诺与存在"),
+      L("frege", "logicism", "逻辑与数学"),
+      L("russell", "descriptions", "摹状词"),
+      L("wittgenstein", "rule-following", "规则与用法"),
+      L("rationalism-empiricism", "induction", "经验与归纳"),
+      L("reliabilism", "naturalism", "可靠与自然"),
+      L("epistemology-bayesian", "confirmation", "概率与确证"),
+      L("properties-emergent", "reduction", "突现与还原"),
+      L("apriori", "necessity", "先验与必然"),
+      L("analytic-synthetic", "meaning", "分析与意义")
     ]
-};
-
-// 跨学科关联网络 (Cross-References - 用于绘制柔和曲线虚线)
-const crossLinksData = [
-    { source: "mind_body_problem", target: "metaphysics", relationType: "Ontological Implication" },
-    { source: "modal_logic", target: "possible_worlds", relationType: "Formal Semantics" },
-    { source: "wittgenstein", target: "logic", relationType: "Early Critique" },
-    { source: "rigorous_designator", target: "metaphysics", relationType: "Essentialism Anchor" },
-    { source: "chinese_room", target: "philosophy_of_mind", relationType: "Against Strong AI" }
-];
+  };
+})();
